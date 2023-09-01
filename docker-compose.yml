@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  seisan-back:
+    container_name: seisan-back
+    networks:
+      default:
+      seisan-network:
+        aliases:
+          - seisan-back-container
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/work
+    tty: true
+    restart: always
+
+networks:
+  seisan-network:
+    external: true
