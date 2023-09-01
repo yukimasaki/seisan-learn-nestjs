@@ -3,20 +3,26 @@ import { deleteUser, createUser } from "./user";
 
 const prisma = new PrismaClient();
 
-const executeSeed = async () => {
-  console.log(`Seedの実行を開始しました`);
-
+const cleanupDatabase = async () => {
   await deleteUser();
+}
 
+const executeSeed = async () => {
   await createUser();
-
-  console.log(`Seedの実行が完了しました`);
 }
 
-try {
-  executeSeed();
-} catch (error) {
-  console.log(error);
-} finally {
-  (async () => await prisma.$disconnect())();
-}
+(async () => {
+  try {
+    console.log(`Seedを開始`);
+    await cleanupDatabase();
+    await executeSeed();
+    console.log(`Seedに成功`);
+  } catch (error) {
+    console.log(`Seedに失敗`);
+    console.log(error);
+  } finally {
+    await prisma.$disconnect();
+    console.log(`Seedを終了`);
+  }
+})();
+
