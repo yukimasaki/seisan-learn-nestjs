@@ -11,19 +11,22 @@ datasource db {
 }
 
 model User {
-  id          Int         @id @default(autoincrement())
-  email       String      @unique
-  displayName String
-  membership  String
-  members     Member[]
+  id            Int                   @id @default(autoincrement())
+  email         String                @unique
+  displayName   String
+  membership    String
+  members       Member[]
+  creators      Transaction[]         @relation("creator")
+  editors       Transaction[]         @relation("editor")
 }
 
 model Group {
-  id          Int         @id @default(autoincrement()) 
-  uid         Int         @unique
-  displayName String
-  members     Member[]
-  categories  Category[]
+  id            Int         @id @default(autoincrement()) 
+  uid           Int         @unique
+  displayName   String
+  members       Member[]
+  categories    Category[]
+  transactions  Transaction[]
 }
 
 model Member {
@@ -37,6 +40,24 @@ model Member {
 model Category {
   id          Int         @id @default(autoincrement()) 
   category    Json
+  group       Group       @relation(fields: [groupId], references: [id])
+  groupId     Int
+}
+
+model Transaction {
+  id          Int         @id @default(autoincrement())
+  creator     User        @relation("creator", fields: [creatorId], references: [id])
+  creatorId   Int
+  editor      User?        @relation("editor", fields: [editorId], references: [id])
+  editorId    Int?
+  createdAt   DateTime
+  editedAt    DateTime?
+  amount      Int
+  paymentDate DateTime
+  title       String
+  category    String
+  memo        String?
+  status      String
   group       Group       @relation(fields: [groupId], references: [id])
   groupId     Int
 }
