@@ -22,7 +22,7 @@ model User {
 }
 
 model Group {
-  id            Int         @id @default(autoincrement()) 
+  id            Int         @id @default(autoincrement())
   uid           Int         @unique
   displayName   String
   members       Member[]
@@ -39,15 +39,17 @@ model Member {
 }
 
 model Category {
-  id          Int         @id @default(autoincrement()) 
-  category    Json
+  id          Int         @id @default(autoincrement())
+  icon        String?
+  category    String
   group       Group       @relation(fields: [groupId], references: [id])
   groupId     Int
+  transaction Transaction[]
 }
 
 model Transaction {
-  id          Int         @id @default(autoincrement())
-  creator     User        @relation("creator", fields: [creatorId], references: [id])
+  id          Int          @id @default(autoincrement())
+  creator     User         @relation("creator", fields: [creatorId], references: [id])
   creatorId   Int
   editor      User?        @relation("editor", fields: [editorId], references: [id])
   editorId    Int?
@@ -56,10 +58,11 @@ model Transaction {
   amount      Int
   paymentDate DateTime
   title       String
-  category    String
   memo        String?
   status      String
-  group       Group       @relation(fields: [groupId], references: [id])
+  category    Category     @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  group       Group        @relation(fields: [groupId], references: [id])
   groupId     Int
   payments    Payment[]
 }
