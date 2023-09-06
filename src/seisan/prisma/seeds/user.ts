@@ -15,8 +15,8 @@ export const createUser = async () => {
     data: Array(10)
     .fill(0)
     .map((_, index) => ({
-      email: `user${index}@example.com`,
-      displayName: `User ${index}`,
+      email: `user${index + 1}@example.com`,
+      displayName: `User ${index + 1}`,
       membership: membership[Math.floor(Math.random() * membership.length)],
     })),
   });
