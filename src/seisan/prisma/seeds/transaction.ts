@@ -7,13 +7,13 @@ export const deleteTransaction = async () => {
 
 export const createTransaction = async () => {
   const userCount = await prisma.user.count();
-  const transactionsPerUser = 30;
+  const transactionsPerUser = 1;
 
   const data = Array.from({ length: userCount }, (_, userId) =>
     Array.from({ length: transactionsPerUser }, (_, index) => ({
       creatorId: userId + 1,
       createdAt: new Date(),
-      amount: 1200,
+      amount: 1501,
       paymentDate: new Date(),
       title: `取引 #${index + 1}`,
       status: `未精算`,

@@ -9,7 +9,7 @@ export const deleteGroup = async () => {
 
 export const createGroup = async () => {
   await prisma.group.createMany({
-    data: Array(2)
+    data: Array(1)
     .fill(0)
     .map((_, index) => {
       const uid: string = uuid();
