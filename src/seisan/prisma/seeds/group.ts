@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { v4 as uuid } from 'uuid';
+
 const prisma = new PrismaClient();
 
 export const deleteGroup = async () => {
@@ -9,10 +11,12 @@ export const createGroup = async () => {
   await prisma.group.createMany({
     data: Array(2)
     .fill(0)
-    .map((_, index) => ({
-      // snowflakeでuidを生成する
-      uid: 123456,
-      displayName: `Group ${index}`,
-    })),
+    .map((_, index) => {
+      const uid: string = uuid();
+      return {
+        uid: uid.replaceAll(`-`, ``),
+        displayName: `Group ${index}`,
+      }
+    }),
   });
 }

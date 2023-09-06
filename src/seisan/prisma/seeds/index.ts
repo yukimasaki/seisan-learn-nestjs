@@ -1,14 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { deleteUser, createUser } from "./user";
+import { createUser, deleteUser } from "./user";
+import { createGroup, deleteGroup } from "./group";
 
 const prisma = new PrismaClient();
 
 const cleanupDatabase = async () => {
   await deleteUser();
+  await deleteGroup();
 }
 
 const executeSeed = async () => {
   await createUser();
+  await createGroup();
 }
 
 (async () => {
