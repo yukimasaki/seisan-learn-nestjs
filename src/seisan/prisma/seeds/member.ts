@@ -7,7 +7,7 @@ export const deleteMember = async () => {
 
 export const createMember = async () => {
   await prisma.member.createMany({
-    data: Array(1)
+    data: Array(3)
     .fill(0)
     .map((_, index) => ({
       userId: index + 1,
