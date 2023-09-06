@@ -7,20 +7,11 @@ export const deleteMember = async () => {
 
 export const createMember = async () => {
   await prisma.member.createMany({
-    data: Array(3)
+    data: Array(10)
     .fill(0)
     .map((_, index) => ({
       userId: index + 1,
       groupId: 1,
-    })),
-  });
-
-  await prisma.member.createMany({
-    data: Array(7)
-    .fill(0)
-    .map((_, index) => ({
-      userId: index + 4,
-      groupId: 2,
     })),
   });
 }

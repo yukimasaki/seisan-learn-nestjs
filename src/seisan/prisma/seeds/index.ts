@@ -3,6 +3,7 @@ import { createUser, deleteUser } from "./user";
 import { createGroup, deleteGroup } from "./group";
 import { createMember, deleteMember } from "./member";
 import { createCategory, deleteCategory } from "./category";
+import { createTransaction, deleteTransaction } from "./transaction";
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,7 @@ const cleanupDatabase = async () => {
   await deleteGroup();
   await deleteMember();
   await deleteCategory();
+  await deleteTransaction();
 }
 
 const executeSeed = async () => {
@@ -18,6 +20,7 @@ const executeSeed = async () => {
   await createGroup();
   await createMember();
   await createCategory();
+  await createTransaction();
 }
 
 (async () => {
