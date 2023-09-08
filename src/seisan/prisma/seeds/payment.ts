@@ -35,9 +35,7 @@ export const createPayment = async () => {
     paymentUser3,
   ]
 
-  data.forEach(async (data) => {
-    await prisma.payment.createMany({
-      data,
-    });
+  await prisma.payment.createMany({
+    data,
   });
 }
