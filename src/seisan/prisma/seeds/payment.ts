@@ -61,7 +61,11 @@ export const createPayment = async () => {
     difference: 0,
   }
   user1Input.defaultPaymentAmount =
-    totalAmount - (user2Input.defaultPaymentAmount + user3Input.defaultPaymentAmount);
+    totalAmount - (
+      user2Input.defaultPaymentAmount +
+      user3Input.defaultPaymentAmount +
+      user4Input.defaultPaymentAmount
+    );
   user1Input.difference =
     user1Input.actualPaymentAmount - user1Input.defaultPaymentAmount;
 
