@@ -14,9 +14,9 @@ export const createPayment = async () => {
   const user2Input = {
     payerId: 2,
     method: `比率`,
-    ratio: (2 / 3) * 0.3,
+    ratio: 1 / 4,
     transactionId: 1,
-    actualPaymentAmount: 500,
+    actualPaymentAmount: 630,
     defaultPaymentAmount: 0,
     difference: 0,
   }
@@ -27,9 +27,9 @@ export const createPayment = async () => {
   const user3Input = {
     payerId: 3,
     method: `比率`,
-    ratio: (1 / 3),
+    ratio: 1 / 4,
     transactionId: 1,
-    actualPaymentAmount: 500,
+    actualPaymentAmount: 630,
     defaultPaymentAmount: 0,
     difference: 0,
   }
@@ -37,12 +37,25 @@ export const createPayment = async () => {
   user3Input.difference =
     user3Input.actualPaymentAmount - user3Input.defaultPaymentAmount;
 
+    const user4Input = {
+    payerId: 4,
+    method: `比率`,
+    ratio: 1 / 4,
+    transactionId: 1,
+    actualPaymentAmount: 611,
+    defaultPaymentAmount: 0,
+    difference: 0,
+  }
+  user4Input.defaultPaymentAmount = Math.round(totalAmount * user4Input.ratio);
+  user4Input.difference =
+    user4Input.actualPaymentAmount - user4Input.defaultPaymentAmount;
+
   const user1Input = {
     payerId: 1,
     method: `比率`,
-    ratio: (2 / 3) * 0.7,
+    ratio: 1 / 4,
     transactionId: 1,
-    actualPaymentAmount: 501,
+    actualPaymentAmount: 630,
     defaultPaymentAmount: 0,
     difference: 0,
   }
@@ -55,6 +68,7 @@ export const createPayment = async () => {
     user1Input,
     user2Input,
     user3Input,
+    user4Input,
   ];
 
   await prisma.payment.createMany({
