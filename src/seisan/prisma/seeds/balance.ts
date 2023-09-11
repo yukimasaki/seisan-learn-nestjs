@@ -6,12 +6,15 @@ export const deleteBalance = async () => {
 }
 
 export const createBalance = async () => {
+  const userCount = await prisma.user.count();
   const transactionId = 1;
-  const memberCount = 3;
-  const totalAmount = 1501;
+  const transaction = await prisma.transaction.findFirst({
+    where: { id: transactionId }
+  });
+  const totalAmount = transaction.amount;
   const balances = [];
 
-  const promises = Array.from({ length: memberCount }, async (_, member) => {
+  const promises = Array.from({ length: userCount }, async (_, member) => {
     const payment = await prisma.payment.findFirst({
       where: {
         payerId: member + 1,

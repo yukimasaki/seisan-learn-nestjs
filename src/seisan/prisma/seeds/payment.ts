@@ -6,8 +6,9 @@ export const deletePayment = async () => {
 }
 
 export const createPayment = async () => {
+  const transactionId = 1;
   const transaction = await prisma.transaction.findFirst({
-    where: { id: 1 }
+    where: { id: transactionId }
   });
   const totalAmount = transaction.amount;
 
