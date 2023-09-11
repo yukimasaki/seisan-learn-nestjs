@@ -12,7 +12,7 @@ export const createTransaction = async () => {
   const data = Array.from({ length: userCount }, (_, userId) =>
     Array.from({ length: transactionsPerUser }, (_, index) => ({
       creatorId: userId + 1,
-      amount: 1501,
+      amount: 2501,
       paymentDate: new Date(),
       title: `取引 #${index + 1}`,
       status: `未精算`,
