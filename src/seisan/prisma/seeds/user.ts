@@ -11,10 +11,10 @@ export const createUser = async () => {
     `premium`,
   ];
 
-  const memberCount = 4;
+  const userCount = 4;
 
   await prisma.user.createMany({
-    data: Array(memberCount)
+    data: Array(userCount)
     .fill(0)
     .map((_, index) => ({
       email: `user${index + 1}@example.com`,
