@@ -19,15 +19,12 @@ export const createBalance = async () => {
       },
     });
 
-    console.log(`user: ${member + 1}`);
-    console.log(`totalAmount: ${totalAmount}`);
-    console.log(`payment.ratio: ${payment.ratio}`);
-    console.log(`payment.amount: ${payment.amount}`);
+    console.log(payment);
 
     const balance = {
       lenderId: member + 1,
       borrowerId : null,
-      amount: Math.round((totalAmount * payment.ratio) - payment.amount),
+      amount: Math.round((totalAmount * payment.ratio) - payment.actualPaymentAmount),
       status: `未精算`,
       transactionId,
     }
