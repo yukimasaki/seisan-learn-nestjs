@@ -6,36 +6,37 @@ export const deleteBalance = async () => {
 }
 
 export const createBalance = async () => {
-  const userCount = await prisma.user.count();
   const transactionId = 1;
-  const transaction = await prisma.transaction.findFirst({
-    where: { id: transactionId }
+  const payments = await prisma.payment.findMany({
+    where: { transactionId },
   });
-  const totalAmount = transaction.amount;
+
+  // 規定額より支払いが多いユーザーを抽出
+  const highPaymentUsers = payments.filter(payment =>
+    payment.actualPaymentAmount > payment.defaultPaymentAmount
+  );
+
+  // 規定額より支払いが少ないユーザーを抽出
+  const lowPaymentUsers = payments.filter(payment =>
+    payment.actualPaymentAmount < payment.defaultPaymentAmount
+  );
+
+  // 支払いが多いユーザー・支払いが少ないユーザーごとにループ処理で賃借記録を作成する
   const balances = [];
-
-  const promises = Array.from({ length: userCount }, async (_, member) => {
-    const payment = await prisma.payment.findFirst({
-      where: {
-        payerId: member + 1,
+  lowPaymentUsers.map(lowPaymentUser => {
+    highPaymentUsers.map(highPaymentUser => {
+      const balance = {
+        lenderId: lowPaymentUser.payerId,
+        borrowerId: highPaymentUser.payerId,
+        amount: highPaymentUser.difference,
+        status: `未精算`,
         transactionId,
-      },
+      }
+      balances.push(balance);
     });
-
-    console.log(payment);
-
-    const balance = {
-      lenderId: member + 1,
-      borrowerId : null,
-      amount: Math.round((totalAmount * payment.ratio) - payment.actualPaymentAmount),
-      status: `未精算`,
-      transactionId,
-    }
-
-    balances.push(balance);
   });
 
-  Promise.all(promises)
-  .then(() => console.log(balances))
-  .catch(error => console.log(error))
+  await prisma.balance.createMany({
+    data: balances
+  });
 }
