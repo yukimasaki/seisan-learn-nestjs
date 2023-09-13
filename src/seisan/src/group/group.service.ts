@@ -18,8 +18,10 @@ export class GroupService {
     return await this.prisma.group.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+  async findOne(id: number): Promise<GroupResponse | null> {
+    return await this.prisma.group.findUnique({
+      where: { id }
+    });
   }
 
   update(id: number, updateGroupDto: UpdateGroupDto) {
