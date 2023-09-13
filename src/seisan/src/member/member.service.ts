@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
+import { PrismaService } from 'src/common/prisma/prisma.service';
+import { MemberResponse } from './entities/member.entity';
 
 @Injectable()
 export class MemberService {
-  create(createMemberDto: CreateMemberDto) {
-    return 'This action adds a new member';
+  constructor(
+    private readonly prisma: PrismaService,
+  ){}
+
+  async create(createMemberDto: CreateMemberDto): Promise<MemberResponse> {
+    return await this.prisma.member.create({
+      data: createMemberDto
+    });
   }
 
   findAll() {
