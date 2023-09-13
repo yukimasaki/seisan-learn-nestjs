@@ -10,17 +10,20 @@ export class UserService {
     private readonly prisma: PrismaService,
   ){}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto): Promise<UserResponse> {
+    return await this.prisma.user.create({
+      data: createUserDto
+    });
   }
 
   async findAll(): Promise<UserResponse[] | null> {
-    const users = await this.prisma.user.findMany();
-    return users;
+    return await this.prisma.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<UserResponse | null> {
+    return await this.prisma.user.findUnique({
+      where: { id }
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
