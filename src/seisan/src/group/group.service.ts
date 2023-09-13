@@ -33,7 +33,9 @@ export class GroupService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async remove(id: number): Promise<GroupResponse> {
+    return await this.prisma.group.delete({
+      where: { id }
+    });
   }
 }
