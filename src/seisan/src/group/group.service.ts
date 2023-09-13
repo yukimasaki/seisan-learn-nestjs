@@ -10,8 +10,10 @@ export class GroupService {
     private readonly prisma: PrismaService,
   ){}
 
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+  async create(createGroupDto: CreateGroupDto): Promise<GroupResponse> {
+    return await this.prisma.group.create({
+      data: createGroupDto
+    });
   }
 
   async findAll(): Promise<GroupResponse[] | null> {
