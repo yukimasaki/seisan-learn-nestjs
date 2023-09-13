@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { PrismaService } from 'src/common/prisma/prisma.service';
+import { GroupResponse } from './entities/group.entity';
 
 @Injectable()
 export class GroupService {
+  constructor(
+    private readonly prisma: PrismaService,
+  ){}
+
   create(createGroupDto: CreateGroupDto) {
     return 'This action adds a new group';
   }
 
-  findAll() {
-    return `This action returns all group`;
+  async findAll(): Promise<GroupResponse[] | null> {
+    return await this.prisma.group.findMany();
   }
 
   findOne(id: number) {
