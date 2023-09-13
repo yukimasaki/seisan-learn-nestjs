@@ -10,11 +10,11 @@ export class User {
   email!: string
 
   @IsString()
-  hashedPassword!: string;
-
-  @IsString()
   @MaxLength(255)
   displayName!: string;
+
+  @IsString()
+  membership
 }
 
 export class UserResponse extends User {}
