@@ -19,8 +19,10 @@ export class CategoryService {
     return await this.prisma.category.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    return await this.prisma.category.findUnique({
+      where: { id }
+    });
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
