@@ -7,9 +7,10 @@ import { GroupModule } from './group/group.module';
 import { MemberModule } from './member/member.module';
 import { CategoryModule } from './category/category.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
-  imports: [UserModule, GroupModule, MemberModule, CategoryModule, TransactionModule],
+  imports: [UserModule, GroupModule, MemberModule, CategoryModule, TransactionModule, PaymentModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
