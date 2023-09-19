@@ -57,6 +57,8 @@ export class TransactionService {
         console.log(err)
       });
     });
+
+    // todo: 現状、成功すると「1」と返却されるのみなので、意味のあるデータを返却する処理を追加したい
   }
 
   async findAll() {
