@@ -25,11 +25,16 @@ export class PaymentService {
     });
   }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  async update(id: number, updatePaymentDto: UpdatePaymentDto) {
+    return await this.prisma.payment.update({
+      where: { id },
+      data: updatePaymentDto
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  async remove(id: number) {
+    return await this.prisma.payment.delete({
+      where: { id }
+    });
   }
 }
