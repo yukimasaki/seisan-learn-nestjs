@@ -51,14 +51,16 @@ export class TransactionService {
           data: createBalanceDto
         }),
       ])
-      .then(() => console.log(`トランザクション処理に成功しました`))
+      .then(() => {
+        console.log(`トランザクション処理に成功しました`);
+      })
       .catch(err => {
-        console.log(`トランザクション処理に失敗しました`)
-        console.log(err)
+        console.log(`トランザクション処理に失敗しました`);
+        console.log(err);
       });
-    });
 
-    // todo: 現状、成功すると「1」と返却されるのみなので、意味のあるデータを返却する処理を追加したい
+      return transaction;
+    });
   }
 
   async findAll() {
