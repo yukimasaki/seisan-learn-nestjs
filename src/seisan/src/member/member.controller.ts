@@ -28,9 +28,17 @@ export class MemberController {
     );
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMemberDto: UpdateMemberDto) {
-    return this.memberService.update(+id, updateMemberDto);
+  @Patch(':userId/:groupId')
+  update(
+    @Param('userId') userId: string,
+    @Param('groupId') groupId: string,
+    @Body() updateMemberDto: UpdateMemberDto,
+  ) {
+    return this.memberService.update(
+      Number(userId),
+      Number(groupId),
+      updateMemberDto,
+    );
   }
 
   @Delete(':id')

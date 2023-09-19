@@ -31,8 +31,16 @@ export class MemberService {
     });
   }
 
-  update(id: number, updateMemberDto: UpdateMemberDto) {
-    return `This action updates a #${id} member`;
+  async update(userId: number, groupId: number, updateMemberDto: UpdateMemberDto) {
+    return await this.prisma.member.update({
+      where: {
+        userId_groupId: {
+          userId,
+          groupId,
+        }
+      },
+      data: updateMemberDto
+    });
   }
 
   remove(id: number) {
