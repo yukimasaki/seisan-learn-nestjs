@@ -19,8 +19,10 @@ export class PaymentService {
     return await this.prisma.payment.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
+  async findOne(id: number) {
+    return await this.prisma.payment.findUnique({
+      where: { id }
+    });
   }
 
   update(id: number, updatePaymentDto: UpdatePaymentDto) {
