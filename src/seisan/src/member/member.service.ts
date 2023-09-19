@@ -43,7 +43,14 @@ export class MemberService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} member`;
+  async remove(userId: number, groupId: number) {
+    return await this.prisma.member.delete({
+      where: {
+        userId_groupId: {
+          userId,
+          groupId,
+        }
+      }
+    });
   }
 }

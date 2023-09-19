@@ -41,8 +41,14 @@ export class MemberController {
     );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.memberService.remove(+id);
+  @Delete(':userId/:groupId')
+  remove(
+    @Param('userId') userId: string,
+    @Param('groupId') groupId: string,
+  ) {
+    return this.memberService.remove(
+      Number(userId),
+      Number(groupId),
+    );
   }
 }
