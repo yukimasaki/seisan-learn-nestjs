@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBalanceDto } from './dto/create-balance.dto';
 import { UpdateBalanceDto } from './dto/update-balance.dto';
+import { PrismaService } from 'src/common/prisma/prisma.service';
 
 @Injectable()
 export class BalanceService {
-  create(createBalanceDto: CreateBalanceDto) {
-    return 'This action adds a new balance';
+  constructor(
+    private readonly prisma: PrismaService,
+  ){}
+
+  async create(createBalanceDto: CreateBalanceDto) {
+    return await this.prisma.balance.create({
+      data: createBalanceDto
+    });
   }
 
-  findAll() {
-    return `This action returns all balance`;
+  async findAll() {
+    return await this.prisma.balance.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} balance`;
+  async findOne(id: number) {
+    return await this.prisma.balance.findUnique({
+      where: { id }
+    });
   }
 
-  update(id: number, updateBalanceDto: UpdateBalanceDto) {
-    return `This action updates a #${id} balance`;
+  async update(id: number, updateBalanceDto: UpdateBalanceDto) {
+    return await this.prisma.balance.update({
+      where: { id },
+      data: updateBalanceDto
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} balance`;
+  async remove(id: number) {
+    return await this.prisma.balance.delete({
+      where: { id }
+    });
   }
 }
