@@ -17,9 +17,15 @@ export class MemberController {
     return this.memberService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.memberService.findOne(+id);
+  @Get(':userId/:groupId')
+  findOne(
+    @Param('userId') userId: string,
+    @Param('groupId') groupId: string,
+  ) {
+    return this.memberService.findOne(
+      Number(userId),
+      Number(groupId),
+    );
   }
 
   @Patch(':id')

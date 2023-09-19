@@ -20,8 +20,15 @@ export class MemberService {
     return await this.prisma.member.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} member`;
+  async findOne(userId: number, groupId: number) {
+    return await this.prisma.member.findUnique({
+      where: {
+        userId_groupId: {
+          userId,
+          groupId,
+        }
+      }
+    });
   }
 
   update(id: number, updateMemberDto: UpdateMemberDto) {
