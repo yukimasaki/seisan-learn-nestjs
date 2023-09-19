@@ -15,8 +15,8 @@ export class PaymentService {
     });
   }
 
-  findAll() {
-    return `This action returns all payment`;
+  async findAll() {
+    return await this.prisma.payment.findMany();
   }
 
   findOne(id: number) {
