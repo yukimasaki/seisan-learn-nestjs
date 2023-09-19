@@ -15,8 +15,8 @@ export class TransactionService {
     });
   }
 
-  findAll() {
-    return `This action returns all transaction`;
+  async findAll() {
+    return await this.prisma.transaction.findMany();
   }
 
   findOne(id: number) {
