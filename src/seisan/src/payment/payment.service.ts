@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { PrismaService } from 'src/common/prisma/prisma.service';
 
 @Injectable()
 export class PaymentService {
-  create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
+  constructor(
+    private readonly prisma: PrismaService,
+  ){}
+
+  async create(createPaymentDto: CreatePaymentDto) {
+    return await this.prisma.payment.create({
+      data: createPaymentDto
+    });
   }
 
   findAll() {
