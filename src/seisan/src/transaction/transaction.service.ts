@@ -32,7 +32,9 @@ export class TransactionService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(id: number) {
+    return await this.prisma.transaction.delete({
+      where: { id }
+    });
   }
 }
