@@ -3,17 +3,17 @@ import { IsInt, IsPositive, IsString } from "class-validator";
 export class Category {
   @IsInt()
   @IsPositive()
-  id!: number;
+  id: number;
 
   @IsString()
-  icon!: string;
+  icon: string;
 
   @IsString()
-  category!: string;
+  category: string;
 
   @IsInt()
   @IsPositive()
-  groupId!: number;
+  groupId: number;
 }
 
 export class CategoryResponse extends Category {}

@@ -3,15 +3,15 @@ import { IsEmail, IsInt, IsPositive, IsString, MaxLength } from "class-validator
 export class User {
   @IsInt()
   @IsPositive()
-  id!: number;
+  id: number;
 
   @IsString()
   @IsEmail()
-  email!: string
+  email: string
 
   @IsString()
   @MaxLength(255)
-  displayName!: string;
+  displayName: string;
 
   @IsString()
   membership
