@@ -24,7 +24,7 @@ const executeSeed = async () => {
   await createGroup();
   await createMember();
   await createCategory();
-  // await createTransaction();
+  await createTransaction();
   // await createPayment();
   // await createBalance();
 }
