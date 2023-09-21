@@ -1968,11 +1968,6 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-dayjs-random@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/dayjs-random/-/dayjs-random-1.0.1.tgz#d6061a44eaf00937730432373f384185b6c274f2"
-  integrity sha512-J6PL4LRnXgah/FPOXGeeePYShyRH779MzaNYKc70J/7tU0I35F1OBV5alke972zZ70grO9SZpASkhUHyHl/qZA==
-
 dayjs@^1.11.10:
   version "1.11.10"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
