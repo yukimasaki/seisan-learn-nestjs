@@ -3,10 +3,6 @@ import { IsDate, IsInt, IsPositive, IsString } from "class-validator";
 export class Transaction {
   @IsInt()
   @IsPositive()
-  id: number;
-
-  @IsInt()
-  @IsPositive()
   creatorId: number;
 
   @IsInt()
