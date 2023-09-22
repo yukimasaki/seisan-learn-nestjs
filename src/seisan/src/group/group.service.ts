@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { PrismaService } from 'src/common/prisma/prisma.service';
+import { PrismaService } from '@@nest/common/prisma/prisma.service';
 import { GroupResponse } from './entities/group.entity';
 
 @Injectable()

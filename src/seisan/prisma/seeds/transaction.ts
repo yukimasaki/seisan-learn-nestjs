@@ -7,13 +7,13 @@ import { TransactionService } from '@@nest/transaction/transaction.service';
 import { randBetween } from 'utils/randBetween';
 
 const prisma = new PrismaClient();
+const prismaService = new PrismaService();
 
 export const deleteTransaction = async () => {
   await prisma.transaction.deleteMany();
 }
 
 export const createTransaction = async () => {
-  const prismaService = new PrismaService();
   const transactionService = new TransactionService(prismaService);
 
   const createTransactionDto: CreateTransactionDto = {
