@@ -18,7 +18,7 @@ export const createTransaction = async () => {
 
   const createTransactionDto: CreateTransactionDto = {
     creatorId: 1,
-    amount: randBetween(100, 49999),
+    amount: randBetween(1000, 49999),
     paymentDate: randomDate('2023-09-01', '2023-09-30'),
     title: `取引 #${randBetween(1, 100)}`,
     memo: `備考`,
@@ -31,16 +31,24 @@ export const createTransaction = async () => {
   const ratio: number = 1 / 4;
   const userCount: number = await prisma.user.count();
 
-  const memberAmount: number = Math.round(createTransactionDto.amount * ratio);
-  const totalAmountWithoutLeader: number = memberAmount * (userCount - 1);
-  const leaderAmount: number = createTransactionDto.amount - totalAmountWithoutLeader;
+  const memberDefaultAmount: number = Math.round(createTransactionDto.amount * ratio);
+
+  const memberActualAmounts: number[] = Array.from({ length: userCount - 1 }, (_, index) => {
+    return Math.round(createTransactionDto.amount * ratio) - randBetween(0, 100);
+  });
+
+  const init = 0;
+  const totalActualAmountWithoutLeader: number = memberActualAmounts.reduce((accumulator, currentValue) =>
+    accumulator + currentValue, init
+  );
+  const leaderAmount: number = createTransactionDto.amount - totalActualAmountWithoutLeader;
 
   const createPaymentOmitTransactionId: CreatePaymentOmitTransactionId[] =
   Array.from({ length: userCount }, (_, index) => (
     {
       payerId: index + 1,
-      actualPaymentAmount: index === 0 ? leaderAmount : memberAmount,
-      defaultPaymentAmount: index === 0 ? leaderAmount : memberAmount,
+      actualPaymentAmount: index === 0 ? leaderAmount : totalActualAmountWithoutLeader[index],
+      defaultPaymentAmount: index === 0 ? leaderAmount : memberDefaultAmount,
       difference: 0,
       method,
       ratio,
