@@ -27,27 +27,20 @@ export const createTransaction = async () => {
     groupId: 1,
   }
 
-  const method = `比率`;
-  const ratio = 1 / 4;
-  const userCount = await prisma.user.count();
+  const method: string = `比率`;
+  const ratio: number = 1 / 4;
+  const userCount: number = await prisma.user.count();
 
-  const memberAmounts: number[] = Array.from({ length: userCount }, (_, index) =>
-    Math.round(createTransactionDto.amount * ratio)
-  );
-
-  const initialValue = 0;
-  const memberTotal: number = memberAmounts.reduce((accumulator, currentValue) =>
-    accumulator + currentValue, initialValue
-  );
-
-  const leaderAmount: number = createTransactionDto.amount - memberTotal;
+  const memberAmount: number = Math.round(createTransactionDto.amount * ratio);
+  const totalAmountWithoutLeader: number = memberAmount * (userCount - 1);
+  const leaderAmount: number = createTransactionDto.amount - totalAmountWithoutLeader;
 
   const createPaymentOmitTransactionId: CreatePaymentOmitTransactionId[] =
   Array.from({ length: userCount }, (_, index) => (
     {
-      payerId: userCount + 1,
-      actualPaymentAmount: index === 0 ? leaderAmount : memberAmounts[index],
-      defaultPaymentAmount: index === 0 ? leaderAmount : memberAmounts[index],
+      payerId: index + 1,
+      actualPaymentAmount: index === 0 ? leaderAmount : memberAmount,
+      defaultPaymentAmount: index === 0 ? leaderAmount : memberAmount,
       difference: 0,
       method,
       ratio,
