@@ -51,9 +51,6 @@ export class TransactionService {
           data: createBalanceDto
         }),
       ])
-      .then(() => {
-        console.log(`トランザクション処理に成功しました`);
-      })
       .catch(err => {
         console.log(`トランザクション処理に失敗しました`);
         console.log(err);
