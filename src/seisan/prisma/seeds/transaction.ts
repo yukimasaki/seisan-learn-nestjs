@@ -102,7 +102,7 @@ export const createTransaction = async () => {
       return highPaymentUsers.map(highPaymentUser => ({
           lenderId: highPaymentUser.payerId,
           borrowerId: lowPaymentUser.payerId,
-          amount: highPaymentUser.difference,
+          amount: Math.abs(lowPaymentUser.difference),
           status: `未精算`,
       }));
     }).flat();
