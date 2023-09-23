@@ -100,8 +100,8 @@ export const createTransaction = async () => {
     const createBalanceOmitTransactionId: CreateBalanceOmitTransactionId[] =
     lowPaymentUsers.map(lowPaymentUser => {
       return highPaymentUsers.map(highPaymentUser => ({
-          lenderId: lowPaymentUser.payerId,
-          borrowerId: highPaymentUser.payerId,
+          lenderId: highPaymentUser.payerId,
+          borrowerId: lowPaymentUser.payerId,
           amount: highPaymentUser.difference,
           status: `未精算`,
       }));
