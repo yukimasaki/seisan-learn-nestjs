@@ -5,6 +5,7 @@ import { CreateTransactionComplex, CreateTransactionDto } from '@@nest/transacti
 import { randBetween } from '@@nest/utils/randBetween';
 import { PrismaService } from '@@nest/common/prisma/prisma.service';
 import { TransactionService } from '@@nest/transaction/transaction.service';
+import { CreateBalanceOmitTransactionId } from '@@nest/balance/dto/create-balance.dto';
 
 const prisma = new PrismaClient();
 
@@ -85,8 +86,26 @@ export const createTransaction = async () => {
       }
     ));
 
-    const createBalanceOmitTransactionId = [
-    ];
+    // 規定額より支払いが多いユーザーを抽出
+    const highPaymentUsers = createPaymentOmitTransactionId.filter(payment =>
+      payment.actualPaymentAmount > payment.defaultPaymentAmount
+    );
+
+    // 規定額より支払いが少ないユーザーを抽出
+    const lowPaymentUsers = createPaymentOmitTransactionId.filter(payment =>
+      payment.actualPaymentAmount < payment.defaultPaymentAmount
+    );
+
+    // 支払いが多いユーザー・支払いが少ないユーザーごとにループ処理で賃借記録を作成する
+    const createBalanceOmitTransactionId: CreateBalanceOmitTransactionId[] =
+    lowPaymentUsers.map(lowPaymentUser => {
+      return highPaymentUsers.map(highPaymentUser => ({
+          lenderId: lowPaymentUser.payerId,
+          borrowerId: highPaymentUser.payerId,
+          amount: highPaymentUser.difference,
+          status: `未精算`,
+      }));
+    }).flat();
 
     const createTransactionComplex: CreateTransactionComplex = {
       createTransactionDto,
