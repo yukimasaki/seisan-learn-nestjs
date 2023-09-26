@@ -60,10 +60,27 @@ export class TransactionService {
     });
   }
 
-  async findAll() {
+  // async findAll() {
+  //   return await this.prisma.transaction.findMany({
+  //     include: {
+  //       category: true,
+  //     },
+  //   });
+  // }
+
+  async findByPaymentDate(
+    start: string,
+    end: string,
+  ) {
     return await this.prisma.transaction.findMany({
       include: {
         category: true,
+      },
+      where: {
+        paymentDate: {
+          gte: new Date(start),
+          lt: new Date(end),
+        },
       },
     });
   }

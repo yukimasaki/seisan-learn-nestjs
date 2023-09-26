@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionComplex } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import * as dayjs from 'dayjs';
 
 @Controller('transaction')
 export class TransactionController {
@@ -14,9 +15,20 @@ export class TransactionController {
     return this.transactionService.createWithTransaction(createTransactionComplex);
   }
 
+  // @Get()
+  // findAll() {
+  //   return this.transactionService.findAll();
+  // }
+
   @Get()
-  findAll() {
-    return this.transactionService.findAll();
+  findByPaymentDate(
+    @Query('start') start: string = dayjs().startOf('month').format('YYYY-MM-DD'),
+    @Query('end') end: string = dayjs().endOf('month').format('YYYY-MM-DD'),
+  ) {
+    return this.transactionService.findByPaymentDate(
+      start,
+      end,
+    );
   }
 
   @Get(':id')
