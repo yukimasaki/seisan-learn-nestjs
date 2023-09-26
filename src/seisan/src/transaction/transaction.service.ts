@@ -61,7 +61,11 @@ export class TransactionService {
   }
 
   async findAll() {
-    return await this.prisma.transaction.findMany();
+    return await this.prisma.transaction.findMany({
+      include: {
+        category: true,
+      },
+    });
   }
 
   async findOne(id: number) {
