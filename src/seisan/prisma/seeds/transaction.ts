@@ -14,7 +14,7 @@ export const deleteTransaction = async () => {
 }
 
 export const createTransaction = async () => {
-  Array.from({ length: 20 }, async (_, index) => {
+  Array.from({ length: 100 }, async (_, index) => {
     const prismaService = new PrismaService();
     const transactionService = new TransactionService(prismaService);
 
@@ -24,7 +24,7 @@ export const createTransaction = async () => {
        *  createTransactionDto.amount: number
        */
       amount: randBetween(1000, 49999),
-      paymentDate: randomDate('2023-09-01', '2023-09-30'),
+      paymentDate: randomDate('2023-08-01', '2023-10-31'),
       title: `取引 #${randBetween(1, 100)}`,
       memo: `備考`,
       status: `未精算`,
