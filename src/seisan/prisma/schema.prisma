@@ -15,7 +15,7 @@ model User {
   email           String                @unique
   displayName     String
   membership      String
-  hashedPassword  String
+  hashedPassword  String                @default("")
   members         Member[]
   creators        Transaction[]         @relation("creator")
   editors         Transaction[]         @relation("editor")
