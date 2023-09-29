@@ -20,6 +20,7 @@ export const createUser = async () => {
       email: `user${index + 1}@example.com`,
       displayName: `User ${index + 1}`,
       membership: membership[Math.floor(Math.random() * membership.length)],
+      hashedPassword: ``,
     })),
   });
 }
