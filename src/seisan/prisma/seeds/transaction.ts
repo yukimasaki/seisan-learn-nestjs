@@ -23,7 +23,7 @@ export const createTransaction = async () => {
        *  createTransactionDto.amount: number
        */
       amount: randBetween(1000, 49999),
-      paymentDate: randomDate('2023-01-01', '2023-12-31'),
+      paymentDate: randomDate('2023-08-01', '2023-10-31'),
       title: `取引 #${randBetween(1, 100)}`,
       memo: `備考`,
       status: `未精算`,
@@ -113,6 +113,7 @@ export const createTransaction = async () => {
     }
 
     await transactionService.createWithTransaction(createTransactionComplex);
+    await prismaService.$disconnect();
   });
 }
 
