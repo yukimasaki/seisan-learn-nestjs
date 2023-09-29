@@ -17,108 +17,103 @@ export const createTransaction = async () => {
   const prismaService = new PrismaService();
   const transactionService = new TransactionService(prismaService);
 
-  // トランザクションを繰り返す回数
-  // todo: Seed実行時にエラーが出るため要検証
-  Array.from({ length: 5 }, (_, index) => {
-    // 1度のトランザクションで作成するTransactionレコードの数
-    Array.from({ length: 20 }, async (_, index) => {
-      const createTransactionDto: CreateTransactionDto = {
-        creatorId: 1,
-        /** 取引の総額
-         *  createTransactionDto.amount: number
-         */
-        amount: randBetween(1000, 49999),
-        paymentDate: randomDate('2023-01-01', '2023-12-31'),
-        title: `取引 #${randBetween(1, 100)}`,
-        memo: `備考`,
-        status: `未精算`,
-        categoryId: randBetween(1, 4),
-        groupId: 1,
-      }
-
-      const method: string = `比率`;
-      const ratio: number = 1 / 4;
-      const userCount: number = await prisma.user.count();
-
-      /** メンバーの既定の支払額
-       *  memberDefaultAmount: number
-      */
-     const memberDefaultAmount: number = Math.round(createTransactionDto.amount * ratio);
-
-      /** メンバーの実際の支払額
-       *  memberActualAmounts: number[]
+  Array.from({ length: 20 }, async (_, index) => {
+    const createTransactionDto: CreateTransactionDto = {
+      creatorId: 1,
+      /** 取引の総額
+       *  createTransactionDto.amount: number
        */
-      const memberActualAmounts: number[] = Array.from({ length: userCount - 1 }, (_, index) => {
-        /** 立替えの有無
-         *  isDebt: boolean
-         */
-        const isDebt: boolean = randomBool();
+      amount: randBetween(1000, 49999),
+      paymentDate: randomDate('2023-01-01', '2023-12-31'),
+      title: `取引 #${randBetween(1, 100)}`,
+      memo: `備考`,
+      status: `未精算`,
+      categoryId: randBetween(1, 4),
+      groupId: 1,
+    }
 
-        const maxDebt: number = Math.round(createTransactionDto.amount / userCount);
-        return !isDebt ?
-        Math.round(createTransactionDto.amount * ratio) :
-        Math.round(createTransactionDto.amount * ratio) - randBetween(1, maxDebt);
-      });
+    const method: string = `比率`;
+    const ratio: number = 1 / 4;
+    const userCount: number = await prisma.user.count();
 
-      /** メンバーの実際の支払額の総額
-       *  memberTotalActualAmount: number
+    /** メンバーの既定の支払額
+     *  memberDefaultAmount: number
+    */
+    const memberDefaultAmount: number = Math.round(createTransactionDto.amount * ratio);
+
+    /** メンバーの実際の支払額
+     *  memberActualAmounts: number[]
+     */
+    const memberActualAmounts: number[] = Array.from({ length: userCount - 1 }, (_, index) => {
+      /** 立替えの有無
+       *  isDebt: boolean
        */
-      const init = 0;
-      const memberTotalActualAmount: number = memberActualAmounts.reduce((accumulator, currentValue) =>
-        accumulator + currentValue, init
-      );
+      const isDebt: boolean = randomBool();
 
-      /** リーダーの既定の支払額
-       *  leaderDefaultAmount: number
-      */
-      const leaderDefaultAmount: number = createTransactionDto.amount - memberDefaultAmount * (userCount - 1);
-
-      /** リーダーの実際の支払額
-       *  leaderActualAmount: number
-       */
-      const leaderActualAmount: number = createTransactionDto.amount - memberTotalActualAmount;
-
-      const createPaymentOmitTransactionId: CreatePaymentOmitTransactionId[] =
-      Array.from({ length: userCount }, (_, index) => (
-        {
-          payerId: index + 1,
-          actualPaymentAmount: index === 0 ? leaderActualAmount : memberActualAmounts[index - 1],
-          defaultPaymentAmount: index === 0 ? leaderDefaultAmount : memberDefaultAmount,
-          difference: index === 0 ? leaderActualAmount - leaderDefaultAmount : memberActualAmounts[index - 1] - memberDefaultAmount,
-          method,
-          ratio,
-        }
-      ));
-
-      // 規定額より支払いが多いユーザーを抽出
-      const highPaymentUsers = createPaymentOmitTransactionId.filter(payment =>
-        payment.actualPaymentAmount > payment.defaultPaymentAmount
-      );
-
-      // 規定額より支払いが少ないユーザーを抽出
-      const lowPaymentUsers = createPaymentOmitTransactionId.filter(payment =>
-        payment.actualPaymentAmount < payment.defaultPaymentAmount
-      );
-
-      // 支払いが多いユーザー・支払いが少ないユーザーごとにループ処理で賃借記録を作成する
-      const createBalanceOmitTransactionId: CreateBalanceOmitTransactionId[] =
-      lowPaymentUsers.map(lowPaymentUser => {
-        return highPaymentUsers.map(highPaymentUser => ({
-            lenderId: highPaymentUser.payerId,
-            borrowerId: lowPaymentUser.payerId,
-            amount: Math.abs(lowPaymentUser.difference),
-            status: `未精算`,
-        }));
-      }).flat();
-
-      const createTransactionComplex: CreateTransactionComplex = {
-        createTransactionDto,
-        createPaymentOmitTransactionId,
-        createBalanceOmitTransactionId,
-      }
-
-      await transactionService.createWithTransaction(createTransactionComplex);
+      const maxDebt: number = Math.round(createTransactionDto.amount / userCount);
+      return !isDebt ?
+      Math.round(createTransactionDto.amount * ratio) :
+      Math.round(createTransactionDto.amount * ratio) - randBetween(1, maxDebt);
     });
+
+    /** メンバーの実際の支払額の総額
+     *  memberTotalActualAmount: number
+     */
+    const init = 0;
+    const memberTotalActualAmount: number = memberActualAmounts.reduce((accumulator, currentValue) =>
+      accumulator + currentValue, init
+    );
+
+    /** リーダーの既定の支払額
+     *  leaderDefaultAmount: number
+    */
+    const leaderDefaultAmount: number = createTransactionDto.amount - memberDefaultAmount * (userCount - 1);
+
+    /** リーダーの実際の支払額
+     *  leaderActualAmount: number
+     */
+    const leaderActualAmount: number = createTransactionDto.amount - memberTotalActualAmount;
+
+    const createPaymentOmitTransactionId: CreatePaymentOmitTransactionId[] =
+    Array.from({ length: userCount }, (_, index) => (
+      {
+        payerId: index + 1,
+        actualPaymentAmount: index === 0 ? leaderActualAmount : memberActualAmounts[index - 1],
+        defaultPaymentAmount: index === 0 ? leaderDefaultAmount : memberDefaultAmount,
+        difference: index === 0 ? leaderActualAmount - leaderDefaultAmount : memberActualAmounts[index - 1] - memberDefaultAmount,
+        method,
+        ratio,
+      }
+    ));
+
+    // 規定額より支払いが多いユーザーを抽出
+    const highPaymentUsers = createPaymentOmitTransactionId.filter(payment =>
+      payment.actualPaymentAmount > payment.defaultPaymentAmount
+    );
+
+    // 規定額より支払いが少ないユーザーを抽出
+    const lowPaymentUsers = createPaymentOmitTransactionId.filter(payment =>
+      payment.actualPaymentAmount < payment.defaultPaymentAmount
+    );
+
+    // 支払いが多いユーザー・支払いが少ないユーザーごとにループ処理で賃借記録を作成する
+    const createBalanceOmitTransactionId: CreateBalanceOmitTransactionId[] =
+    lowPaymentUsers.map(lowPaymentUser => {
+      return highPaymentUsers.map(highPaymentUser => ({
+          lenderId: highPaymentUser.payerId,
+          borrowerId: lowPaymentUser.payerId,
+          amount: Math.abs(lowPaymentUser.difference),
+          status: `未精算`,
+      }));
+    }).flat();
+
+    const createTransactionComplex: CreateTransactionComplex = {
+      createTransactionDto,
+      createPaymentOmitTransactionId,
+      createBalanceOmitTransactionId,
+    }
+
+    await transactionService.createWithTransaction(createTransactionComplex);
   });
 }
 
