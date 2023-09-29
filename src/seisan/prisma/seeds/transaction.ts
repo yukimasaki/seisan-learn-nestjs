@@ -14,10 +14,9 @@ export const deleteTransaction = async () => {
 }
 
 export const createTransaction = async () => {
-  const prismaService = new PrismaService();
-  const transactionService = new TransactionService(prismaService);
-
   Array.from({ length: 20 }, async (_, index) => {
+    const prismaService = new PrismaService();
+    const transactionService = new TransactionService(prismaService);
     const createTransactionDto: CreateTransactionDto = {
       creatorId: 1,
       /** 取引の総額
