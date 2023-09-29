@@ -9,9 +9,10 @@ import { CategoryModule } from './category/category.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { PaymentModule } from './payment/payment.module';
 import { BalanceModule } from './balance/balance.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, GroupModule, MemberModule, CategoryModule, TransactionModule, PaymentModule, BalanceModule],
+  imports: [UserModule, GroupModule, MemberModule, CategoryModule, TransactionModule, PaymentModule, BalanceModule, AuthModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
