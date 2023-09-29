@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id            Int                   @id @default(autoincrement())
-  email         String                @unique
-  displayName   String
-  membership    String
-  members       Member[]
-  creators      Transaction[]         @relation("creator")
-  editors       Transaction[]         @relation("editor")
-  payments      Payment[]
-  lenders       Balance[]             @relation("lender")
-  borrowers     Balance[]             @relation("borrower")
+  id              Int                   @id @default(autoincrement())
+  email           String                @unique
+  displayName     String
+  membership      String
+  hashedPassword  String
+  members         Member[]
+  creators        Transaction[]         @relation("creator")
+  editors         Transaction[]         @relation("editor")
+  payments        Payment[]
+  lenders         Balance[]             @relation("lender")
+  borrowers       Balance[]             @relation("borrower")
 }
 
 model Group {
