@@ -1,3 +1,4 @@
+import { OmitType } from "@nestjs/mapped-types";
 import { IsEmail, IsInt, IsPositive, IsString, MaxLength } from "class-validator";
 
 export class User {
@@ -14,7 +15,12 @@ export class User {
   displayName: string;
 
   @IsString()
-  membership
+  membership: string;
+
+  @IsString()
+  hashedPassword: string;
 }
 
 export class UserResponse extends User {}
+
+export class UserOmitPassword extends OmitType(User, ['id', 'hashedPassword']) {}
