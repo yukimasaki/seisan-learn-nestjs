@@ -21,50 +21,43 @@ export class TransactionService {
     const createBalanceOmitTransactionId = createTransactionComplex.createBalanceOmitTransactionId;
 
     // 1. Prismaのトランザクション処理を開始
-    return await this.prisma.$transaction(
-      async (prisma) =>
-      {
-        // 2. Transactionを作成
-        const transaction: TransactionResponse = await this.prisma.transaction.create({
-          data: createTransactionDto
-        });
+    return await this.prisma.$transaction(async (prisma) => {
+      // 2. Transactionを作成
+      const transaction: TransactionResponse = await this.prisma.transaction.create({
+        data: createTransactionDto
+      });
 
-        // 3. transactionIdを取得
-        const transactionId = transaction.id;
-        // transactionIdを付与する (Payment)
-        const createPaymentDto: CreatePaymentDto[] = createPaymentOmitTransactionId.map(omitTransactionId => ({
-          ...omitTransactionId,
-          transactionId,
-        }));
-        // transactionIdを付与する (Balance)
-        const createBalanceDto: CreateBalanceDto[] = createBalanceOmitTransactionId.map(omitTransactionId => ({
-          ...omitTransactionId,
-          transactionId,
-        }));
+      // 3. transactionIdを取得
+      const transactionId = transaction.id;
+      // transactionIdを付与する (Payment)
+      const createPaymentDto: CreatePaymentDto[] = createPaymentOmitTransactionId.map(omitTransactionId => ({
+        ...omitTransactionId,
+        transactionId,
+      }));
+      // transactionIdを付与する (Balance)
+      const createBalanceDto: CreateBalanceDto[] = createBalanceOmitTransactionId.map(omitTransactionId => ({
+        ...omitTransactionId,
+        transactionId,
+      }));
 
-        // APIへのアクセスをPromise.allで並列処理し高速化する
-        Promise.all([
-          // 4. Paymentを作成
-          await this.prisma.payment.createMany({
-            data: createPaymentDto
-          }),
-          // 5. Balanceを作成
-          await this.prisma.balance.createMany({
-            data: createBalanceDto
-          }),
-        ])
-        .catch(err => {
-          console.log(`トランザクション処理に失敗しました`);
-          console.log(err);
-        });
+      // APIへのアクセスをPromise.allで並列処理し高速化する
+      Promise.all([
+        // 4. Paymentを作成
+        await this.prisma.payment.createMany({
+          data: createPaymentDto
+        }),
+        // 5. Balanceを作成
+        await this.prisma.balance.createMany({
+          data: createBalanceDto
+        }),
+      ])
+      .catch(err => {
+        console.log(`トランザクション処理に失敗しました`);
+        console.log(err);
+      });
 
-        return transaction;
-      },
-      {
-        maxWait: 5000,
-        timeout: 10000,
-      }
-    );
+      return transaction;
+    });
   }
 
   // async findAll() {
