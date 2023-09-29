@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -12,7 +13,19 @@ import { BalanceModule } from './balance/balance.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, GroupModule, MemberModule, CategoryModule, TransactionModule, PaymentModule, BalanceModule, AuthModule],
+  imports: [
+    UserModule,
+    GroupModule,
+    MemberModule,
+    CategoryModule,
+    TransactionModule,
+    PaymentModule,
+    BalanceModule,
+    AuthModule,
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
