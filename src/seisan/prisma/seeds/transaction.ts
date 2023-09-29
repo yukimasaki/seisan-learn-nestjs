@@ -14,7 +14,7 @@ export const deleteTransaction = async () => {
 }
 
 export const createTransaction = async () => {
-  Array.from({ length: 20 }, async (_, index) => {
+  Array.from({ length: 30 }, async (_, index) => {
     const prismaService = new PrismaService();
     const transactionService = new TransactionService(prismaService);
     const createTransactionDto: CreateTransactionDto = {
