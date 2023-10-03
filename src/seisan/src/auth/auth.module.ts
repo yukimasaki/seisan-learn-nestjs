@@ -8,6 +8,7 @@ import { UserModule } from '@@nest/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { RedisService } from '@@nest/common/redis/redis.service';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { JwtStrategy } from './jwt.strategy';
     PrismaService,
     LocalStrategy,
     JwtStrategy,
+    RedisService,
   ],
 
 })
