@@ -11,6 +11,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { PaymentModule } from './payment/payment.module';
 import { BalanceModule } from './balance/balance.module';
 import { AuthModule } from './auth/auth.module';
+import { RedisService } from './common/redis/redis.service';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { AuthModule } from './auth/auth.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, RedisService],
 })
 export class AppModule {}
