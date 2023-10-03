@@ -32,13 +32,11 @@ export class AuthService {
       email: string,
       password: string,
     }
-  ) {
+  ): Promise<string> {
     const payload = {
       userId: user.email,
     }
 
-    return {
-      access_token: this.jwtService.sign(payload)
-    }
+    return this.jwtService.sign(payload);
   }
 }

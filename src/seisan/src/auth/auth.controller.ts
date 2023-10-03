@@ -9,8 +9,16 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() request) {
-    return this.authService.login(request.user);
+  async login(@Request() request): Promise<void> {
+    const access_token = await this.authService.login(request.user);
+    const expirationDate = new Date();
+    expirationDate.setSeconds(expirationDate.getSeconds() + 60);
+
+    request.res.cookie('access_token', access_token, {
+      httpOnly: true,
+      secure: false,
+      expires: expirationDate,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
