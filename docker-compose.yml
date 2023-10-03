@@ -47,6 +47,7 @@ services:
       seisan-network:
         aliases:
           - redis-container
+    image: "redis:latest"
     ports:
       - "6379:6379"
     volumes:
