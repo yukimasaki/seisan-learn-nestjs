@@ -7,7 +7,7 @@ async function bootstrap() {
     cors: true,
   });
 
-  app.use(cookieParser);
+  app.use(cookieParser());
 
   await app.listen(3000);
 }
