@@ -68,13 +68,11 @@ export class AuthService {
     ] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.ACCESS_TOKEN_SECRET,
-        // expiresIn: '15m',
-        expiresIn: '30s',
+        expiresIn: EXPIRES_IN.accessToken,
       }),
       this.jwtService.signAsync(payload, {
         secret: process.env.REFRESH_TOKEN_SECRET,
-        // expiresIn: '7d',
-        expiresIn: '1m',
+        expiresIn: EXPIRES_IN.refreshToken,
       }),
       randomUUID(),
     ]);
