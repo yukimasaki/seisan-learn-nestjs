@@ -4,6 +4,8 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { LoginResponse } from './dto/login-response.dto';
 import { EXPIRES_IN } from '@@nest/common/master/expires-in.master';
 import { RefreshTokenAuthGuard } from './refresh-token-auth.guard';
+import { AccessTokenAuthGuard } from './access-token-auth.guard';
+import { UserOmitPassword } from '@@nest/user/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +31,15 @@ export class AuthController {
     const loginResponse: LoginResponse = req.user;
     this._setCookie(req, loginResponse);
     return loginResponse;
+  }
+
+  @UseGuards(AccessTokenAuthGuard)
+  @Get('profile')
+  getProfile(
+    @Request() req
+  ): UserOmitPassword {
+    const userOmitPassword: UserOmitPassword = req.user;
+    return userOmitPassword;
   }
 
   _setCookie(

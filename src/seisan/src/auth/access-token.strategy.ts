@@ -3,10 +3,14 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Request } from "express";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { JwtPayload } from "./dto/jwt-payload.dto";
+import { UserOmitPassword } from "@@nest/user/entities/user.entity";
+import { UserService } from "@@nest/user/user.service";
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'access-token') {
-  constructor() {
+  constructor(
+    private readonly userService: UserService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
@@ -17,15 +21,13 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'access-toke
       ]),
       ignoreExpiration: false,
       secretOrKey: process.env.ACCESS_TOKEN_SECRET,
-      passReqToCallback: true,
     });
   }
 
   async validate(
     payload: JwtPayload
   ) {
-    return {
-      userId: payload.email,
-    }
+    const userOmitPassword: UserOmitPassword = await this.userService.findOne(payload.email);
+    return userOmitPassword;
   }
 }
