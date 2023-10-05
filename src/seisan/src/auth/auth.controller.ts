@@ -1,16 +1,14 @@
-import { Controller, Post, Request, Response, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { RedisService } from '@@nest/common/redis/redis.service';
 import { LoginResponse } from './dto/login-response.dto';
 import { EXPIRES_IN } from '@@nest/common/master/expires-in.master';
+import { RefreshTokenAuthGuard } from './refresh-token-auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly redisService: RedisService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -18,9 +16,25 @@ export class AuthController {
   async login(
     @Request() req,
   ): Promise<LoginResponse> {
-    const loginResponse: LoginResponse = await this.authService.login(req.user);
+    const loginResponse: LoginResponse = await this.authService.signTokens(req.user);
+    this._setCookie(req, loginResponse);
+    return loginResponse;
+  }
 
-    // HTTP Cookieをセット
+  @UseGuards(RefreshTokenAuthGuard)
+  @Get('refresh')
+  async refreshToken(
+    @Request() req
+  ): Promise<LoginResponse> {
+    const loginResponse: LoginResponse = req.user;
+    this._setCookie(req, loginResponse);
+    return loginResponse;
+  }
+
+  _setCookie(
+    req,
+    loginResponse: LoginResponse,
+  ): void {
     const expiresAccessToken: number = 1000 * EXPIRES_IN.accessToken;
     req.res.cookie('access_token', loginResponse.tokens.accessToken, {
       httpOnly: true,
@@ -40,13 +54,5 @@ export class AuthController {
       secure: false,
       expiresIn: expiresRefreshToken,
     });
-
-    return loginResponse;
   }
-
-//   @UseGuards(JwtAuthGuard)
-//   @Get('profile')
-//   getProfile(@Request() request) {
-//     return request.user;
-//   }
 }

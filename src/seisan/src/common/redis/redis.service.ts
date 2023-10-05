@@ -8,7 +8,7 @@ export class RedisService {
     port: 6379,
   });
 
-  async findOne(key: string) {
+  async findOne(key: string): Promise<string> {
     return await this.redis.get(key);
   }
 

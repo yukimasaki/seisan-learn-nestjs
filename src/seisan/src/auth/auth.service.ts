@@ -1,7 +1,7 @@
 import { UserOmitPassword, UserResponse } from '@@nest/user/entities/user.entity';
 import { UserService } from '@@nest/user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './dto/jwt-payload.dto';
 import { Credential } from './dto/credential.dto';
@@ -35,7 +35,7 @@ export class AuthService {
     return null;
   }
 
-  async login(
+  async signTokens(
     userOmitPassword: UserOmitPassword
   ): Promise<LoginResponse> {
     // 1. Tokensを生成
@@ -43,10 +43,9 @@ export class AuthService {
 
     // 2. RedisにセッションIDとハッシュ化したリフレッシュトークンを保存
     const saltOrRounds: number = 10;
-    const sessionId: string = randomUUID();
     const hashedRefreshToken: string = await bcrypt.hash(tokens.refreshToken, saltOrRounds);
     const expiresRefreshToken: number = EXPIRES_IN.refreshToken;
-    await this.redisService.setValue(sessionId, hashedRefreshToken, expiresRefreshToken);
+    await this.redisService.setValue(tokens.sessionId, hashedRefreshToken, expiresRefreshToken);
 
     return {
       userOmitPassword,
@@ -82,5 +81,21 @@ export class AuthService {
       refreshToken,
       sessionId,
     }
+  }
+
+  async refreshToken(
+    refreshToken: string,
+    sessionId: string,
+    jwtPayload: JwtPayload,
+  ): Promise<LoginResponse> {
+    const hashedRefreshToken: string = await this.redisService.findOne(sessionId);
+    const isMatch: boolean = await bcrypt.compare(refreshToken, hashedRefreshToken);
+
+    if (!isMatch) throw new UnauthorizedException;
+
+    const user: UserResponse = await this.userService.findOne(jwtPayload.email);
+    const { hashedPassword, ...userOmitPassword } = user;
+    const loginResponse: LoginResponse = await this.signTokens(userOmitPassword);
+    return loginResponse;
   }
 }

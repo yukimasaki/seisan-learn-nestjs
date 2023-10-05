@@ -7,17 +7,15 @@ import { LocalStrategy } from './local.strategy';
 import { UserModule } from '@@nest/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
+import { AccessTokenStrategy } from './access-token.strategy';
 import { RedisService } from '@@nest/common/redis/redis.service';
+import { RefreshTokenStrategy } from './refresh-token.strategy';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
-    })
+    JwtModule.register({}),
   ],
   controllers: [AuthController],
   providers: [
@@ -25,7 +23,8 @@ import { RedisService } from '@@nest/common/redis/redis.service';
     UserService,
     PrismaService,
     LocalStrategy,
-    JwtStrategy,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
     RedisService,
   ],
 
