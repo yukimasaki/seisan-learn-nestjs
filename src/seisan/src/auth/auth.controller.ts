@@ -51,20 +51,20 @@ export class AuthController {
     req.res.cookie('access_token', loginResponse.tokens.accessToken, {
       httpOnly: true,
       secure: false,
-      expires: new Date(now.getTime() + (expiresAccessToken * 1000)),
+      expires: new Date(now.getTime() + (expiresAccessToken)),
     });
 
     const expiresRefreshToken: number = 1000 * EXPIRES_IN.refreshToken;
     req.res.cookie('refresh_token', loginResponse.tokens.refreshToken, {
       httpOnly: true,
       secure: false,
-      expires: new Date(now.getTime() + (expiresRefreshToken * 1000)),
+      expires: new Date(now.getTime() + (expiresRefreshToken)),
     });
 
     req.res.cookie('session_id', loginResponse.tokens.sessionId, {
       httpOnly: true,
       secure: false,
-      expires: new Date(now.getTime() + (expiresRefreshToken * 1000)),
+      expires: new Date(now.getTime() + (expiresRefreshToken)),
     });
   }
 }
