@@ -17,20 +17,24 @@ export class AuthController {
   @Post('login')
   async login(
     @Request() req,
-  ): Promise<LoginResponse> {
+  ): Promise<UserOmitPassword> {
     const loginResponse: LoginResponse = await this.authService.signTokens(req.user);
+    const userOmitPassword: UserOmitPassword = loginResponse.userOmitPassword;
+
     this._setCookie(req, loginResponse);
-    return loginResponse;
+    return userOmitPassword;
   }
 
   @UseGuards(RefreshTokenAuthGuard)
   @Get('refresh')
   async refreshToken(
     @Request() req
-  ): Promise<LoginResponse> {
+  ): Promise<UserOmitPassword> {
     const loginResponse: LoginResponse = req.user;
+    const userOmitPassword: UserOmitPassword = loginResponse.userOmitPassword;
+
     this._setCookie(req, loginResponse);
-    return loginResponse;
+    return userOmitPassword;
   }
 
   @UseGuards(AccessTokenAuthGuard)
