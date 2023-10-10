@@ -19,4 +19,10 @@ export class RedisService {
   ) {
     return await this.redis.set(key, value, 'EX', expiresIn);
   }
+
+  async delete(
+    key: string
+  ): Promise<number> {
+    return await this.redis.del(key);
+  }
 }

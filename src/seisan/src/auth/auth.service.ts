@@ -98,4 +98,10 @@ export class AuthService {
     const loginResponse: LoginResponse = await this.signTokens(userOmitPassword);
     return loginResponse;
   }
+
+  async logout(
+    sessionId: string
+  ): Promise<number> {
+    return await this.redisService.delete(sessionId);
+  }
 }

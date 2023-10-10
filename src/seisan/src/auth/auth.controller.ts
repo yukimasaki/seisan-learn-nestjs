@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
 import { LoginResponse } from './dto/login-response.dto';
@@ -46,6 +46,25 @@ export class AuthController {
     return userOmitPassword;
   }
 
+  @UseGuards(AccessTokenAuthGuard)
+  @Delete('logout')
+  async logout(
+    @Request() req
+  ) {
+    const httpCookie: LoginResponse = req.user;
+    const sessionId: string = httpCookie.tokens.sessionId;
+
+    return Promise.all([
+      await this.authService.logout(sessionId),
+      this._deleteCookie(req),
+    ])
+    .then(() => {
+      return {
+        result: true,
+      }
+    });
+  }
+
   _setCookie(
     req,
     loginResponse: LoginResponse,
@@ -69,6 +88,28 @@ export class AuthController {
       httpOnly: true,
       secure: false,
       expires: new Date(now.getTime() + (expiresRefreshToken)),
+    });
+  }
+
+  _deleteCookie(
+    req
+  ): void {
+    req.res.cookie('access_token', null, {
+      httpOnly: true,
+      secure: false,
+      expires: 0,
+    });
+
+    req.res.cookie('refresh_token', null, {
+      httpOnly: true,
+      secure: false,
+      expires: 0,
+    });
+
+    req.res.cookie('session_id', null, {
+      httpOnly: true,
+      secure: false,
+      expires: 0,
     });
   }
 }
