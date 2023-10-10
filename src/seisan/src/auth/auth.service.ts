@@ -96,6 +96,10 @@ export class AuthService {
     const user: UserResponse = await this.userService.findOne(jwtPayload.email);
     const { hashedPassword, ...userOmitPassword } = user;
     const loginResponse: LoginResponse = await this.signTokens(userOmitPassword);
+
+    // 古いセッション情報をRedisから削除する
+    await this.redisService.delete(sessionId);
+
     return loginResponse;
   }
 
