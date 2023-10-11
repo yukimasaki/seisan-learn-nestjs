@@ -20,9 +20,12 @@ export class UserService {
     return await this.prisma.user.findMany();
   }
 
-  async findOne(email: string): Promise<UserResponse | null> {
+  async findOne(email: string) {
     return await this.prisma.user.findUnique({
-      where: { email }
+      where: { email },
+      include: {
+        members: true,
+      },
     });
   }
 
