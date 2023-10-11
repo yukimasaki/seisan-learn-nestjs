@@ -54,15 +54,10 @@ export class AuthController {
     const httpCookie: LoginResponse = req.user;
     const sessionId: string = httpCookie.tokens.sessionId;
 
-    return Promise.all([
-      await this.authService.logout(sessionId),
-      this._deleteCookie(req),
-    ])
-    .then(() => {
-      return {
-        result: true,
-      }
-    });
+    await this.authService.logout(sessionId);
+    return {
+      result: true,
+    }
   }
 
   _setCookie(
@@ -88,28 +83,6 @@ export class AuthController {
       httpOnly: true,
       secure: false,
       expires: new Date(now.getTime() + (expiresRefreshToken)),
-    });
-  }
-
-  _deleteCookie(
-    req
-  ): void {
-    req.res.cookie('access_token', null, {
-      httpOnly: true,
-      secure: false,
-      expires: 0,
-    });
-
-    req.res.cookie('refresh_token', null, {
-      httpOnly: true,
-      secure: false,
-      expires: 0,
-    });
-
-    req.res.cookie('session_id', null, {
-      httpOnly: true,
-      secure: false,
-      expires: 0,
     });
   }
 }
