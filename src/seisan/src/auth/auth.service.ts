@@ -89,8 +89,9 @@ export class AuthService {
     jwtPayload: JwtPayload,
   ): Promise<LoginResponse> {
     const hashedRefreshToken: string = await this.redisService.findOne(sessionId);
-    const isMatch: boolean = await bcrypt.compare(refreshToken, hashedRefreshToken);
+    if (!hashedRefreshToken) throw new UnauthorizedException;
 
+    const isMatch: boolean = await bcrypt.compare(refreshToken, hashedRefreshToken);
     if (!isMatch) throw new UnauthorizedException;
 
     const user: UserResponse = await this.userService.findOne(jwtPayload.email);
