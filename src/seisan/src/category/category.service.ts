@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from '@@nest/common/prisma/prisma.service';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
@@ -15,8 +16,14 @@ export class CategoryService {
     });
   }
 
-  async findAll() {
-    return await this.prisma.category.findMany();
+  async findAll(
+    groupId: number,
+  ): Promise<Category[]> {
+    return await this.prisma.category.findMany({
+      where: {
+        groupId,
+       },
+    });
   }
 
   async findOne(id: number) {
