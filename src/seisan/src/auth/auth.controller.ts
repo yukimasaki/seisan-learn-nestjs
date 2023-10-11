@@ -56,7 +56,7 @@ export class AuthController {
 
     await this.authService.logout(sessionId);
     return {
-      result: true,
+      loggedIn: false,
     }
   }
 
