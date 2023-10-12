@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
@@ -13,8 +13,12 @@ export class MemberController {
   }
 
   @Get()
-  findAll() {
-    return this.memberService.findAll();
+  findByGroupId(
+    @Query('groupId')  groupId: string,
+  ) {
+    return this.memberService.findByGroupId(
+      +groupId,
+    );
   }
 
   @Get(':userId/:groupId')
@@ -23,8 +27,8 @@ export class MemberController {
     @Param('groupId') groupId: string,
   ) {
     return this.memberService.findOne(
-      Number(userId),
-      Number(groupId),
+      +userId,
+      +groupId,
     );
   }
 
@@ -35,8 +39,8 @@ export class MemberController {
     @Body() updateMemberDto: UpdateMemberDto,
   ) {
     return this.memberService.update(
-      Number(userId),
-      Number(groupId),
+      +userId,
+      +groupId,
       updateMemberDto,
     );
   }
@@ -47,8 +51,8 @@ export class MemberController {
     @Param('groupId') groupId: string,
   ) {
     return this.memberService.remove(
-      Number(userId),
-      Number(groupId),
+      +userId,
+      +groupId,
     );
   }
 }

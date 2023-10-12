@@ -16,8 +16,17 @@ export class MemberService {
     });
   }
 
-  async findAll(): Promise<MemberResponse[] | null> {
-    return await this.prisma.member.findMany();
+  async findByGroupId(
+    groupId: number,
+  ): Promise<MemberResponse[] | null> {
+    return await this.prisma.member.findMany({
+      where: {
+        groupId,
+      },
+      include: {
+        user: true,
+      },
+    });
   }
 
   async findOne(userId: number, groupId: number) {
