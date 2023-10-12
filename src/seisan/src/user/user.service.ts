@@ -24,7 +24,11 @@ export class UserService {
     return await this.prisma.user.findUnique({
       where: { email },
       include: {
-        members: true,
+        members: {
+          include: {
+            group: true,
+          }
+        },
       },
     });
   }
