@@ -23,7 +23,7 @@ export class AuthService {
     credential: Credential
   ): Promise<UserOmitPassword | null> {
     const { email, password } = credential;
-    const user: UserResponse | null = await this.userService.findOne(email);
+    const user: UserResponse | null = await this.userService.findByEmail(email);
     if (!user) throw new NotFoundException
 
     const isMatch: boolean = await bcrypt.compare(password, user.hashedPassword);
@@ -94,7 +94,7 @@ export class AuthService {
     const isMatch: boolean = await bcrypt.compare(refreshToken, hashedRefreshToken);
     if (!isMatch) throw new UnauthorizedException;
 
-    const user: UserResponse = await this.userService.findOne(jwtPayload.email);
+    const user: UserResponse = await this.userService.findByEmail(jwtPayload.email);
     const { hashedPassword, ...userOmitPassword } = user;
     const loginResponse: LoginResponse = await this.signTokens(userOmitPassword);
 

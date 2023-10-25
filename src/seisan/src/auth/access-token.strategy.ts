@@ -31,7 +31,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'access-toke
     req: Request,
     payload: JwtPayload,
   ): Promise<LoginResponse> {
-    const userOmitPassword: UserOmitPassword = await this.userService.findOne(payload.email);
+    const userOmitPassword: UserOmitPassword = await this.userService.findByEmail(payload.email);
     const tokens: Tokens = {
       accessToken: req.cookies?.access_token,
       refreshToken: req.cookies?.refresh_token,
