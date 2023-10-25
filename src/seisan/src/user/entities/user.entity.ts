@@ -23,4 +23,4 @@ export class User {
 
 export class UserResponse extends User {}
 
-export class UserOmitPassword extends OmitType(User, ['id', 'hashedPassword']) {}
+export class UserOmitPassword extends OmitType(User, ['hashedPassword']) {}
