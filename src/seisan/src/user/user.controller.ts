@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 @ApiTags('/users')
@@ -10,6 +11,13 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post()
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体登録API' })
+  @ApiResponse({
+    status: 201,
+    description: '登録したユーザー情報を返却',
+    type: User,
+  })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
