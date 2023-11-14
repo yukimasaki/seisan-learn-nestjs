@@ -39,7 +39,7 @@ export class UserController {
   @ApiOperation({ summary: '単体取得API (メールアドレス)' })
   @ApiResponse({
     status: 200,
-    description: '指定したメールアドレスに紐づくユーザー情報を返却',
+    description: '指定されたメールアドレスのユーザー情報を返却',
     type: User,
   })
   findByEmail(@Param('email') email: string) {
@@ -51,7 +51,7 @@ export class UserController {
   @ApiOperation({ summary: '単体取得API (ID)' })
   @ApiResponse({
     status: 200,
-    description: '指定したIDに紐づくユーザー情報を返却',
+    description: '指定されたIDのユーザー情報を返却',
     type: User,
   })
   findById(@Param('id') id: string) {
