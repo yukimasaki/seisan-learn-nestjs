@@ -23,6 +23,13 @@ export class UserController {
   }
 
   @Get()
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '全体取得API' })
+  @ApiResponse({
+    status: 200,
+    description: '登録済みユーザー情報を全数返却',
+    type: User,
+  })
   findAll() {
     return this.userService.findAll();
   }
