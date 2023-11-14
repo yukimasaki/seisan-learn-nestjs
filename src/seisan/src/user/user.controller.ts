@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 
 @Controller('users')
@@ -37,6 +37,11 @@ export class UserController {
   @Get('email/:email')
   @ApiProduces('application/json; charset=utf-8')
   @ApiOperation({ summary: '単体取得API (メールアドレス)' })
+  @ApiParam({
+    name: 'email',
+    type: String,
+    example: 'john@example.com',
+  })
   @ApiResponse({
     status: 200,
     description: '指定されたメールアドレスのユーザー情報を返却',
@@ -49,6 +54,11 @@ export class UserController {
   @Get('id/:id')
   @ApiProduces('application/json; charset=utf-8')
   @ApiOperation({ summary: '単体取得API (ID)' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
   @ApiResponse({
     status: 200,
     description: '指定されたIDのユーザー情報を返却',
@@ -61,6 +71,11 @@ export class UserController {
   @Patch(':id')
   @ApiProduces('application/json; charset=utf-8')
   @ApiOperation({ summary: '単体更新API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
   @ApiResponse({
     status: 200,
     description: '更新後のユーザー情報を返却',
@@ -73,6 +88,11 @@ export class UserController {
   @Delete(':id')
   @ApiProduces('application/json; charset=utf-8')
   @ApiOperation({ summary: '単体削除API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
   @ApiResponse({
     status: 200,
     description: '削除後のユーザー情報を返却',
