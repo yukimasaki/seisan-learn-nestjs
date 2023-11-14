@@ -47,6 +47,13 @@ export class UserController {
   }
 
   @Get('id/:id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体取得API (ID)' })
+  @ApiResponse({
+    status: 200,
+    description: '指定したIDに紐づくユーザー情報を返却',
+    type: User,
+  })
   findById(@Param('id') id: string) {
     return this.userService.findById(+id);
   }
