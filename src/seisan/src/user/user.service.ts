@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '@@nest/common/prisma/prisma.service';
-import { UserResponse } from './entities/user.entity';
+import { User, UserResponse } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -57,8 +57,16 @@ export class UserService {
   }
 
   async remove(id: number): Promise<UserResponse> {
-    return await this.prisma.user.delete({
-      where: { id }
-    });
+    const currentUser: User = await this.findById(id);
+    if (!currentUser) throw new NotFoundException;
+
+    try {
+      const user = await this.prisma.user.delete({
+        where: { id }
+      });
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException;
+    }
   }
 }
