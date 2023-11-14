@@ -59,6 +59,13 @@ export class UserController {
   }
 
   @Patch(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体更新API' })
+  @ApiResponse({
+    status: 200,
+    description: '更新後のユーザー情報を返却',
+    type: User,
+  })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
