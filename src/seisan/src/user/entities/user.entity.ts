@@ -30,7 +30,7 @@ export class User {
   @ApiProperty({
     example: 'free',
     description: '',
-    // enum: ['free', 'premium'],
+    enum: ['free', 'premium'],
   })
   @IsString()
   membership: string;
