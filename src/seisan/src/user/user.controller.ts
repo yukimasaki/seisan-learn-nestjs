@@ -71,6 +71,13 @@ export class UserController {
   }
 
   @Delete(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体削除API' })
+  @ApiResponse({
+    status: 200,
+    description: '削除後のユーザー情報を返却',
+    type: User,
+  })
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
