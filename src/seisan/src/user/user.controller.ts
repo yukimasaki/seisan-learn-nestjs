@@ -35,6 +35,13 @@ export class UserController {
   }
 
   @Get('email/:email')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体取得API (メールアドレス)' })
+  @ApiResponse({
+    status: 200,
+    description: '指定したメールアドレスに紐づくユーザー情報を返却',
+    type: User,
+  })
   findByEmail(@Param('email') email: string) {
     return this.userService.findByEmail(email);
   }
