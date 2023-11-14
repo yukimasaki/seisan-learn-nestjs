@@ -12,7 +12,7 @@ export class User {
   id: number;
 
   @ApiProperty({
-    example: 'jhon@example.com',
+    example: 'john@example.com',
     description: 'メールアドレス',
   })
   @IsString()
