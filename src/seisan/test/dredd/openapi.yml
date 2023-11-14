@@ -1,0 +1,691 @@
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /users:
+    post:
+      operationId: UserController_create
+      summary: 単体登録API
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: 登録したユーザー情報を返却
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: &ref_0
+        - /users
+    get:
+      operationId: UserController_findAll
+      summary: 全体取得API
+      parameters: []
+      responses:
+        '200':
+          description: 登録済みユーザー情報を全数返却
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: *ref_0
+  /users/email/{email}:
+    get:
+      operationId: UserController_findByEmail
+      summary: 単体取得API (メールアドレス)
+      parameters:
+        - name: email
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 指定されたメールアドレスのユーザー情報を返却
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: *ref_0
+  /users/id/{id}:
+    get:
+      operationId: UserController_findById
+      summary: 単体取得API (ID)
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 指定されたIDのユーザー情報を返却
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: *ref_0
+  /users/{id}:
+    patch:
+      operationId: UserController_update
+      summary: 単体更新API
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: 更新後のユーザー情報を返却
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: *ref_0
+    delete:
+      operationId: UserController_remove
+      summary: 単体削除API
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 削除後のユーザー情報を返却
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags: *ref_0
+  /groups:
+    post:
+      operationId: GroupController_create
+      summary: 単体登録API
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupDto'
+      responses:
+        '200':
+          description: 登録後のグループ情報を返却する
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Group'
+      tags: &ref_1
+        - /groups
+    get:
+      operationId: GroupController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
+  /groups/{id}:
+    get:
+      operationId: GroupController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
+    patch:
+      operationId: GroupController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGroupDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
+    delete:
+      operationId: GroupController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
+  /member:
+    post:
+      operationId: MemberController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMemberDto'
+      responses:
+        '201':
+          description: ''
+    get:
+      operationId: MemberController_findByGroupId
+      parameters:
+        - name: groupId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /member/{userId}/{groupId}:
+    get:
+      operationId: MemberController_findOne
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: groupId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    patch:
+      operationId: MemberController_update
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: groupId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMemberDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: MemberController_remove
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: groupId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /category:
+    post:
+      operationId: CategoryController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryDto'
+      responses:
+        '201':
+          description: ''
+    get:
+      operationId: CategoryController_findAll
+      parameters:
+        - name: group
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /category/{id}:
+    get:
+      operationId: CategoryController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    patch:
+      operationId: CategoryController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: CategoryController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /transaction:
+    post:
+      operationId: TransactionController_createWithTransaction
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransactionComplex'
+      responses:
+        '201':
+          description: ''
+    get:
+      operationId: TransactionController_findByPaymentDate
+      parameters:
+        - name: start
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: end
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /transaction/{id}:
+    get:
+      operationId: TransactionController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    patch:
+      operationId: TransactionController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTransactionDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: TransactionController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /payment:
+    post:
+      operationId: PaymentController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentDto'
+      responses:
+        '201':
+          description: ''
+    get:
+      operationId: PaymentController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /payment/{id}:
+    get:
+      operationId: PaymentController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    patch:
+      operationId: PaymentController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePaymentDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: PaymentController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /balance:
+    post:
+      operationId: BalanceController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBalanceDto'
+      responses:
+        '201':
+          description: ''
+    get:
+      operationId: BalanceController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /balance/{id}:
+    get:
+      operationId: BalanceController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    patch:
+      operationId: BalanceController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBalanceDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: BalanceController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      responses:
+        '201':
+          description: ''
+  /auth/refresh:
+    get:
+      operationId: AuthController_refreshToken
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /auth/profile:
+    get:
+      operationId: AuthController_getProfile
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /auth/logout:
+    delete:
+      operationId: AuthController_logout
+      parameters: []
+      responses:
+        '200':
+          description: ''
+info:
+  title: seisan-app API docs
+  description: seisan-appのAPI仕様書です。
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    CreateUserDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: '1'
+          description: ユーザーID
+        email:
+          type: string
+          example: john@example.com
+          description: メールアドレス
+        displayName:
+          type: string
+          example: Jhon Doe
+          description: ''
+        membership:
+          type: string
+          example: free
+          description: ''
+          enum: &ref_2
+            - free
+            - premium
+        hashedPassword:
+          type: string
+          example: $2a$12$jA9fyFy1qfh379BEfaJM2uGPe9EnqrEZnREv1iaiX8nyCmQz69ERK
+          description: ハッシュ化されたパスワード
+      required:
+        - id
+        - email
+        - displayName
+        - membership
+        - hashedPassword
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+          example: '1'
+          description: ユーザーID
+        email:
+          type: string
+          example: john@example.com
+          description: メールアドレス
+        displayName:
+          type: string
+          example: Jhon Doe
+          description: ''
+        membership:
+          type: string
+          example: free
+          description: ''
+          enum: *ref_2
+        hashedPassword:
+          type: string
+          example: $2a$12$jA9fyFy1qfh379BEfaJM2uGPe9EnqrEZnREv1iaiX8nyCmQz69ERK
+          description: ハッシュ化されたパスワード
+      required:
+        - id
+        - email
+        - displayName
+        - membership
+        - hashedPassword
+    UpdateUserDto:
+      type: object
+      properties: {}
+    CreateGroupDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: '1'
+          description: グループID
+        uid:
+          type: string
+          example: c68e0836b2e04476a18eeb17a5c3385b
+          description: Webアプリケーション用の固有ID。UUIDv4からハイフンを除いた文字列を使用。
+        displayName:
+          type: string
+          example: グループA
+          description: グループの表示名
+      required:
+        - id
+        - uid
+        - displayName
+    Group:
+      type: object
+      properties:
+        id:
+          type: number
+          example: '1'
+          description: グループID
+        uid:
+          type: string
+          example: c68e0836b2e04476a18eeb17a5c3385b
+          description: Webアプリケーション用の固有ID。UUIDv4からハイフンを除いた文字列を使用。
+        displayName:
+          type: string
+          example: グループA
+          description: グループの表示名
+      required:
+        - id
+        - uid
+        - displayName
+    UpdateGroupDto:
+      type: object
+      properties: {}
+    CreateMemberDto:
+      type: object
+      properties: {}
+    UpdateMemberDto:
+      type: object
+      properties: {}
+    CreateCategoryDto:
+      type: object
+      properties: {}
+    UpdateCategoryDto:
+      type: object
+      properties: {}
+    CreateTransactionComplex:
+      type: object
+      properties: {}
+    UpdateTransactionDto:
+      type: object
+      properties: {}
+    CreatePaymentDto:
+      type: object
+      properties: {}
+    UpdatePaymentDto:
+      type: object
+      properties: {}
+    CreateBalanceDto:
+      type: object
+      properties: {}
+    UpdateBalanceDto:
+      type: object
+      properties: {}
