@@ -3,7 +3,8 @@ import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Member } from './entities/member.entity';
 
 @Controller('members')
 @ApiTags('/members')
@@ -12,6 +13,13 @@ export class MemberController {
   constructor(private readonly memberService: MemberService) { }
 
   @Post()
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体登録API' })
+  @ApiResponse({
+    status: 201,
+    description: '登録したメンバー情報を返却',
+    type: Member,
+  })
   create(@Body() createMemberDto: CreateMemberDto) {
     return this.memberService.create(createMemberDto);
   }
