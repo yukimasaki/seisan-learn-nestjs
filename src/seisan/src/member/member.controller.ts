@@ -46,6 +46,23 @@ export class MemberController {
   }
 
   @Get(':userId/:groupId')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体取得API' })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    example: '1',
+  })
+  @ApiParam({
+    name: 'groupId',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '指定されたユーザーIDとグループIDの組み合わせのメンバーを返却',
+    type: Member,
+  })
   findOne(
     @Param('userId') userId: string,
     @Param('groupId') groupId: string,
