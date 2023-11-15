@@ -41,6 +41,18 @@ export class BalanceController {
   }
 
   @Patch(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体更新API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '更新後の貸借情報を返却',
+    type: Balance,
+  })
   update(@Param('id') id: string, @Body() updateBalanceDto: UpdateBalanceDto) {
     return this.balanceService.update(+id, updateBalanceDto);
   }
