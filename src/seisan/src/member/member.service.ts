@@ -8,7 +8,7 @@ import { MemberResponse } from './entities/member.entity';
 export class MemberService {
   constructor(
     private readonly prisma: PrismaService,
-  ){}
+  ) { }
 
   async create(createMemberDto: CreateMemberDto): Promise<MemberResponse> {
     return await this.prisma.member.create({
@@ -36,7 +36,10 @@ export class MemberService {
           userId,
           groupId,
         }
-      }
+      },
+      include: {
+        user: true,
+      },
     });
   }
 
