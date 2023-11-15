@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestExc
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiOperation, ApiProduces, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProduces, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 import { Category } from './entities/category.entity';
 
@@ -45,6 +45,18 @@ export class CategoryController {
   }
 
   @Get(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体取得API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '指定されたIDのカテゴリー情報を返却',
+    type: Category,
+  })
   findOne(
     @Param('id') id: string,
   ) {
