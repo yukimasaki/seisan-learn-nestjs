@@ -3,7 +3,7 @@ import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
-import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProduces, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Member } from './entities/member.entity';
 
 @Controller('members')
@@ -25,6 +25,18 @@ export class MemberController {
   }
 
   @Get()
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '所属メンバー取得API' })
+  @ApiResponse({
+    status: 200,
+    description: '指定されたグループIDのメンバーを返却',
+    type: Member,
+  })
+  @ApiQuery({
+    name: 'groupId',
+    type: String,
+    example: '1',
+  })
   findByGroupId(
     @Query('groupId') groupId: string,
   ) {
