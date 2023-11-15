@@ -15,7 +15,7 @@ export class BalanceController {
   @ApiProduces('application/json; charset=utf-8')
   @ApiOperation({ summary: '全体取得API' })
   @ApiResponse({
-    status: 201,
+    status: 200,
     description: '登録済みの貸借情報を全数返却',
     type: Balance,
   })
