@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Group } from './entities/group.entity';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 
@@ -37,6 +37,18 @@ export class GroupController {
   }
 
   @Get(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体取得API (ID)' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '指定されたIDのグループ情報を返却',
+    type: Group,
+  })
   findOne(@Param('id') id: string) {
     return this.groupService.findOne(+id);
   }
