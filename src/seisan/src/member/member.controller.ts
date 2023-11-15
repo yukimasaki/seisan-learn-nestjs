@@ -2,10 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
+import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('member')
+@Controller('members')
+@ApiTags('/members')
+@SummarizeApiResponse()
 export class MemberController {
-  constructor(private readonly memberService: MemberService) {}
+  constructor(private readonly memberService: MemberService) { }
 
   @Post()
   create(@Body() createMemberDto: CreateMemberDto) {
@@ -14,7 +18,7 @@ export class MemberController {
 
   @Get()
   findByGroupId(
-    @Query('groupId')  groupId: string,
+    @Query('groupId') groupId: string,
   ) {
     return this.memberService.findByGroupId(
       +groupId,
