@@ -30,7 +30,7 @@ export class MemberController {
   @ApiOperation({ summary: '所属メンバー取得API' })
   @ApiResponse({
     status: 200,
-    description: '指定されたグループIDのメンバーを返却',
+    description: '指定されたグループIDに所属するメンバー情報を返却',
     type: Member,
   })
   @ApiQuery({
