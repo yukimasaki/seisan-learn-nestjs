@@ -37,11 +37,11 @@ export class CategoryController {
     description: '指定されたグループIDのカテゴリー情報を返却',
     type: Category,
   })
-  findAll(
+  findByGroupId(
     @Query('groupId') groupId: string,
   ) {
     if (!groupId) throw new BadRequestException;
-    return this.categoryService.findAll(+groupId);
+    return this.categoryService.findByGroupId(+groupId);
   }
 
   @Get(':id')

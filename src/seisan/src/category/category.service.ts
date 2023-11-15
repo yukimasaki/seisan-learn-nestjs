@@ -8,7 +8,7 @@ import { Category } from './entities/category.entity';
 export class CategoryService {
   constructor(
     private readonly prisma: PrismaService,
-  ){}
+  ) { }
 
   async create(createCategoryDto: CreateCategoryDto) {
     return await this.prisma.category.create({
@@ -16,13 +16,13 @@ export class CategoryService {
     });
   }
 
-  async findAll(
+  async findByGroupId(
     groupId: number,
   ): Promise<Category[]> {
     return await this.prisma.category.findMany({
       where: {
         groupId,
-       },
+      },
     });
   }
 
