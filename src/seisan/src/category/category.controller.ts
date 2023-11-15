@@ -2,10 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestExc
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 
-@Controller('category')
+@Controller('categories')
+@ApiTags('/categories')
+@SummarizeApiResponse()
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) { }
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
