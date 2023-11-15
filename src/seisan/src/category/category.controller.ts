@@ -84,7 +84,21 @@ export class CategoryController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体削除API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '削除後のカテゴリー情報を返却',
+    type: Category,
+  })
+  remove(
+    @Param('id') id: string
+  ) {
     return this.categoryService.remove(+id);
   }
 }
