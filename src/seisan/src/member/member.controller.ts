@@ -5,7 +5,6 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 import { ApiOperation, ApiParam, ApiProduces, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Member } from './entities/member.entity';
-import { Group } from '@@nest/group/entities/group.entity';
 
 @Controller('members')
 @ApiTags('/members')
