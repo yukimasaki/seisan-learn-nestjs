@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { PrismaService } from './common/prisma/prisma.service';
 import { GroupModule } from './group/group.module';
@@ -27,7 +25,7 @@ import { RedisService } from './common/redis/redis.service';
       envFilePath: ['.env'],
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService, PrismaService, RedisService],
+  controllers: [],
+  providers: [PrismaService, RedisService],
 })
-export class AppModule {}
+export class AppModule { }
