@@ -60,7 +60,7 @@ export class MemberController {
   })
   @ApiResponse({
     status: 200,
-    description: '指定されたユーザーIDとグループIDの組み合わせのメンバーを返却',
+    description: '指定されたユーザーIDとグループIDの組み合わせのメンバー情報を返却',
     type: Member,
   })
   findOne(
