@@ -25,6 +25,13 @@ export class PaymentController {
   }
 
   @Get()
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '全体取得API' })
+  @ApiResponse({
+    status: 200,
+    description: '登録済み支払情報を全数返却',
+    type: Payment,
+  })
   findAll() {
     return this.paymentService.findAll();
   }
