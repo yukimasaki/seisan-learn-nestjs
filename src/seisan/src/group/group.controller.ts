@@ -71,6 +71,18 @@ export class GroupController {
   }
 
   @Delete(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体削除API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '削除後のグループ情報を返却',
+    type: Group,
+  })
   remove(@Param('id') id: string) {
     return this.groupService.remove(+id);
   }
