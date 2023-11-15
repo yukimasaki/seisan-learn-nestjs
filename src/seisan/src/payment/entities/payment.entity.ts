@@ -4,7 +4,7 @@ import { IsInt, IsNumber, IsPositive, IsString, Max, Min } from "class-validator
 export class Payment {
   @ApiProperty({
     example: '1',
-    description: '支払いID',
+    description: '支払ID',
   })
   @IsInt()
   @IsPositive()
@@ -41,7 +41,7 @@ export class Payment {
 
   @ApiProperty({
     example: '比率',
-    description: '支払いの負担方法',
+    description: '負担方法',
     enum: ['均等', '比率', '金額指定', 'なし'],
   })
   @IsString()
