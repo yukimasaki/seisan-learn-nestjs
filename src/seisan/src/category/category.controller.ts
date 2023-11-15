@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestExc
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiProduces, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 import { Category } from './entities/category.entity';
 
@@ -25,8 +25,20 @@ export class CategoryController {
   }
 
   @Get()
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: 'グループ別カテゴリー取得API' })
+  @ApiQuery({
+    name: 'groupId',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '指定されたグループIDのカテゴリー情報を返却',
+    type: Category,
+  })
   findAll(
-    @Query('group') groupId: string,
+    @Query('groupId') groupId: string,
   ) {
     if (!groupId) throw new BadRequestException;
     return this.categoryService.findAll(+groupId);
