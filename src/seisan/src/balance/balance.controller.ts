@@ -1,7 +1,7 @@
 import { Controller, Get, Body, Patch, Param } from '@nestjs/common';
 import { BalanceService } from './balance.service';
 import { UpdateBalanceDto } from './dto/update-balance.dto';
-import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 import { Balance } from './entities/balance.entity';
 
@@ -24,6 +24,18 @@ export class BalanceController {
   }
 
   @Get(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体登録API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '指定したIDの貸借情報を返却',
+    type: Balance,
+  })
   findOne(@Param('id') id: string) {
     return this.balanceService.findOne(+id);
   }
