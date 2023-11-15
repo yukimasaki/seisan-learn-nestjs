@@ -4,9 +4,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiParam, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 
 @Controller('users')
 @ApiTags('/users')
+@SummarizeApiResponse()
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
