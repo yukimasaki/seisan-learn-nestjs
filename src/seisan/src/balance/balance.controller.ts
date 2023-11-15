@@ -13,10 +13,10 @@ export class BalanceController {
 
   @Get()
   @ApiProduces('application/json; charset=utf-8')
-  @ApiOperation({ summary: '単体取得API' })
+  @ApiOperation({ summary: '全体取得API' })
   @ApiResponse({
     status: 201,
-    description: '指定したIDの貸借情報を返却',
+    description: '登録済みの貸借情報を全数返却',
     type: Balance,
   })
   findAll() {
