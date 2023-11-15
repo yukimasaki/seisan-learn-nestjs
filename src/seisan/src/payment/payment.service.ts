@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PrismaService } from '@@nest/common/prisma/prisma.service';
 
@@ -23,12 +22,6 @@ export class PaymentService {
     return await this.prisma.payment.update({
       where: { id },
       data: updatePaymentDto
-    });
-  }
-
-  async remove(id: number) {
-    return await this.prisma.payment.delete({
-      where: { id }
     });
   }
 }
