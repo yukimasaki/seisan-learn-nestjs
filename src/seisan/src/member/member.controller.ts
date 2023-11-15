@@ -5,6 +5,7 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 import { ApiOperation, ApiParam, ApiProduces, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Member } from './entities/member.entity';
+import { Group } from '@@nest/group/entities/group.entity';
 
 @Controller('members')
 @ApiTags('/members')
@@ -74,6 +75,23 @@ export class MemberController {
   }
 
   @Patch(':userId/:groupId')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体更新API' })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    example: '1',
+  })
+  @ApiParam({
+    name: 'groupId',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '更新後のメンバー情報を返却',
+    type: Member,
+  })
   update(
     @Param('userId') userId: string,
     @Param('groupId') groupId: string,
