@@ -4,9 +4,11 @@ import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Group } from './entities/group.entity';
+import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 
 @Controller('groups')
 @ApiTags('/groups')
+@SummarizeApiResponse()
 export class GroupController {
   constructor(private readonly groupService: GroupService) { }
 
