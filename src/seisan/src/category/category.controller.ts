@@ -64,7 +64,22 @@ export class CategoryController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体更新API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '更新後のカテゴリー情報を返却',
+    type: Category,
+  })
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto
+  ) {
     return this.categoryService.update(+id, updateCategoryDto);
   }
 
