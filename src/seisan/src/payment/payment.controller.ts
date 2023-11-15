@@ -1,7 +1,7 @@
 import { Controller, Get, Body, Patch, Param } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 import { Payment } from './entities/payment.entity';
 
@@ -24,6 +24,18 @@ export class PaymentController {
   }
 
   @Get(':id')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体取得API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '指定したIDの支払情報を返却',
+    type: Payment,
+  })
   findOne(@Param('id') id: string) {
     return this.paymentService.findOne(+id);
   }
