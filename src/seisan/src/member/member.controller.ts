@@ -105,6 +105,23 @@ export class MemberController {
   }
 
   @Delete(':userId/:groupId')
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体削除API' })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    example: '1',
+  })
+  @ApiParam({
+    name: 'groupId',
+    type: String,
+    example: '1',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '削除後のメンバー情報を返却',
+    type: Member,
+  })
   remove(
     @Param('userId') userId: string,
     @Param('groupId') groupId: string,
