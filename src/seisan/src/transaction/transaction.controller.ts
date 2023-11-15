@@ -3,10 +3,14 @@ import { TransactionService } from './transaction.service';
 import { CreateTransactionComplex } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import * as dayjs from 'dayjs';
+import { ApiTags } from '@nestjs/swagger';
+import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 
-@Controller('transaction')
+@Controller('transactions')
+@ApiTags('/transactions')
+@SummarizeApiResponse()
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(private readonly transactionService: TransactionService) { }
 
   @Post()
   createWithTransaction(
