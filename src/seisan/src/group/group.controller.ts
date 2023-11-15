@@ -24,6 +24,13 @@ export class GroupController {
     return this.groupService.create(createGroupDto);
   }
 
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '全体取得API' })
+  @ApiResponse({
+    status: 200,
+    description: '登録済みグループ情報を全数返却',
+    type: Group,
+  })
   @Get()
   findAll() {
     return this.groupService.findAll();
