@@ -3,8 +3,9 @@ import { TransactionService } from './transaction.service';
 import { CreateTransactionComplex } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import * as dayjs from 'dayjs';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
+import { Transaction } from './entities/transaction.entity';
 
 @Controller('transactions')
 @ApiTags('/transactions')
@@ -13,6 +14,13 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) { }
 
   @Post()
+  @ApiProduces('application/json; charset=utf-8')
+  @ApiOperation({ summary: '単体登録API' })
+  @ApiResponse({
+    status: 201,
+    description: '登録後の取引情報を返却',
+    type: Transaction,
+  })
   createWithTransaction(
     @Body() createTransactionComplex: CreateTransactionComplex,
   ) {
