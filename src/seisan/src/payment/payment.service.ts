@@ -7,13 +7,7 @@ import { PrismaService } from '@@nest/common/prisma/prisma.service';
 export class PaymentService {
   constructor(
     private readonly prisma: PrismaService,
-  ){}
-
-  async create(createPaymentDto: CreatePaymentDto) {
-    return await this.prisma.payment.create({
-      data: createPaymentDto
-    });
-  }
+  ) { }
 
   async findAll() {
     return await this.prisma.payment.findMany();

@@ -12,18 +12,6 @@ import { Payment } from './entities/payment.entity';
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) { }
 
-  @Post()
-  @ApiProduces('application/json; charset=utf-8')
-  @ApiOperation({ summary: '単体登録API' })
-  @ApiResponse({
-    status: 201,
-    description: '登録した支払情報を返却',
-    type: Payment,
-  })
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentService.create(createPaymentDto);
-  }
-
   @Get()
   @ApiProduces('application/json; charset=utf-8')
   @ApiOperation({ summary: '全体取得API' })
