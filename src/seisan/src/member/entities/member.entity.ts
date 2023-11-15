@@ -11,7 +11,7 @@ export class Member {
   userId: number;
 
   @ApiProperty({
-    example: 'c68e0836b2e04476a18eeb17a5c3385b',
+    example: '1',
     description: 'グループID',
   })
   @IsInt()
