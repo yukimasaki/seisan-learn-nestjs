@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBalanceDto } from './dto/create-balance.dto';
 import { UpdateBalanceDto } from './dto/update-balance.dto';
 import { PrismaService } from '@@nest/common/prisma/prisma.service';
 
@@ -7,13 +6,7 @@ import { PrismaService } from '@@nest/common/prisma/prisma.service';
 export class BalanceService {
   constructor(
     private readonly prisma: PrismaService,
-  ){}
-
-  async create(createBalanceDto: CreateBalanceDto) {
-    return await this.prisma.balance.create({
-      data: createBalanceDto
-    });
-  }
+  ) { }
 
   async findAll() {
     return await this.prisma.balance.findMany();
@@ -29,12 +22,6 @@ export class BalanceService {
     return await this.prisma.balance.update({
       where: { id },
       data: updateBalanceDto
-    });
-  }
-
-  async remove(id: number) {
-    return await this.prisma.balance.delete({
-      where: { id }
     });
   }
 }
