@@ -16,7 +16,7 @@ export class GroupController {
   @ApiProduces('application/json; charset=utf-8')
   @ApiOperation({ summary: '単体登録API' })
   @ApiResponse({
-    status: 200,
+    status: 201,
     description: '登録後のグループ情報を返却する',
     type: Group,
   })
