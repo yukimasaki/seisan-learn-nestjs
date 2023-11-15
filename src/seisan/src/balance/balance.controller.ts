@@ -1,8 +1,12 @@
 import { Controller, Get, Body, Patch, Param } from '@nestjs/common';
 import { BalanceService } from './balance.service';
 import { UpdateBalanceDto } from './dto/update-balance.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { SummarizeApiResponse } from '@@nest/common/decorators/summarize-api-response.decorator';
 
-@Controller('balance')
+@Controller('balances')
+@ApiTags('/balances')
+@SummarizeApiResponse()
 export class BalanceController {
   constructor(private readonly balanceService: BalanceService) { }
 
