@@ -1,5 +1,4 @@
-import { OmitType } from "@nestjs/mapped-types";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, OmitType } from "@nestjs/swagger";
 import { IsEmail, IsInt, IsPositive, IsString, MaxLength } from "class-validator";
 
 export class User {
