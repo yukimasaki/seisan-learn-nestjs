@@ -10,13 +10,13 @@ import { TransactionResponse } from './entities/transaction.entity';
 export class TransactionService {
   constructor(
     private readonly prisma: PrismaService,
-  ){}
+  ) { }
 
   async createWithTransaction(
     createTransactionComplex: CreateTransactionComplex,
   ) {
     // 複合化されたリクエストボディを個別のオブジェクトに分割する
-    const createTransactionDto = createTransactionComplex.createTransactionDto;
+    const createTransactionSeedDto = createTransactionComplex.createTransactionSeedDto;
     const createPaymentOmitTransactionId = createTransactionComplex.createPaymentOmitTransactionId;
     const createBalanceOmitTransactionId = createTransactionComplex.createBalanceOmitTransactionId;
 
@@ -24,7 +24,7 @@ export class TransactionService {
     return await this.prisma.$transaction(async (prisma) => {
       // 2. Transactionを作成
       const transaction: TransactionResponse = await this.prisma.transaction.create({
-        data: createTransactionDto
+        data: createTransactionSeedDto
       });
 
       // 3. transactionIdを取得
@@ -51,10 +51,10 @@ export class TransactionService {
           data: createBalanceDto
         }),
       ])
-      .catch(err => {
-        console.log(`トランザクション処理に失敗しました`);
-        console.log(err);
-      });
+        .catch(err => {
+          console.log(`トランザクション処理に失敗しました`);
+          console.log(err);
+        });
 
       return transaction;
     });
