@@ -17,7 +17,7 @@ export class CreateTransactionDto extends OmitType(Transaction, ['id', 'creatorI
 }
 
 export class CreateTransactionComplex {
-  createTransactionDto: CreateTransactionSeedDto;
+  createTransactionSeedDto: CreateTransactionSeedDto;
   createPaymentOmitTransactionId: CreatePaymentOmitTransactionId[];
   createBalanceOmitTransactionId: CreateBalanceOmitTransactionId[];
 }
