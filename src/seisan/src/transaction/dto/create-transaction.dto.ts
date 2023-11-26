@@ -5,15 +5,16 @@ import { OmitType } from "@nestjs/swagger";
 
 export class CreateTransactionSeedDto extends OmitType(Transaction, ['id', 'editorId']) { }
 
-export class CreateTransactionDto extends OmitType(Transaction, ['id', 'creatorId', 'editorId']) {
+export class CreateTransactionDto extends OmitType(Transaction, ['id', 'editorId']) {
+  method: string;
   ratioArray: {
     id: number,
     value: number,
-  }[]
+  }[];
   actualPaymentAmountArray: {
     id: number,
     value: number,
-  }[]
+  }[];
 }
 
 export class CreateTransactionComplex {
