@@ -1,16 +1,23 @@
 import { Transaction } from "../entities/transaction.entity";
 import { CreatePaymentOmitTransactionId } from "@@nest/payment/dto/create-payment.dto";
 import { CreateBalanceOmitTransactionId } from "@@nest/balance/dto/create-balance.dto";
-import { OmitType, IntersectionType } from "@nestjs/swagger";
+import { OmitType } from "@nestjs/swagger";
 
-export class CreateTransactionDto extends OmitType(Transaction, ['id', 'editorId']) { }
-// export class CreateTransactionComplex extends IntersectionType(
-//   CreateTransactionDto,
-//   CreatePaymentOmitTransactionId,
-//   CreateBalanceOmitTransactionId,
-// ) { }
+export class CreateTransactionSeedDto extends OmitType(Transaction, ['id', 'editorId']) { }
+
+export class CreateTransactionDto extends OmitType(Transaction, ['id', 'creatorId', 'editorId']) {
+  ratioArray: {
+    id: number,
+    value: number,
+  }[]
+  actualPaymentAmountArray: {
+    id: number,
+    value: number,
+  }[]
+}
+
 export class CreateTransactionComplex {
-  createTransactionDto: CreateTransactionDto;
+  createTransactionDto: CreateTransactionSeedDto;
   createPaymentOmitTransactionId: CreatePaymentOmitTransactionId[];
   createBalanceOmitTransactionId: CreateBalanceOmitTransactionId[];
 }
