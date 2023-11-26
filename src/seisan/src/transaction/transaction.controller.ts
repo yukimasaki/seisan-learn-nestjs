@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { CreateTransactionComplex } from './dto/create-transaction.dto';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import * as dayjs from 'dayjs';
 import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -22,9 +22,9 @@ export class TransactionController {
     type: Transaction,
   })
   createWithTransaction(
-    @Body() createTransactionComplex: CreateTransactionComplex,
+    @Body() createTransactionDto: CreateTransactionDto,
   ) {
-    return this.transactionService.createWithTransaction(createTransactionComplex);
+    return this.transactionService.createWithTransaction(createTransactionDto);
   }
 
   // @Get()
