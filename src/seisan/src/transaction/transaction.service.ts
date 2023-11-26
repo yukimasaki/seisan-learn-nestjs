@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionComplex } from './dto/create-transaction.dto';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { PrismaService } from '@@nest/common/prisma/prisma.service';
 import { CreatePaymentDto } from '@@nest/payment/dto/create-payment.dto';
@@ -13,18 +13,15 @@ export class TransactionService {
   ) { }
 
   async createWithTransaction(
-    createTransactionComplex: CreateTransactionComplex,
+    createTransactionDto: CreateTransactionDto,
   ) {
-    // 複合化されたリクエストボディを個別のオブジェクトに分割する
-    const createTransactionSeedDto = createTransactionComplex.createTransactionSeedDto;
-    const createPaymentOmitTransactionId = createTransactionComplex.createPaymentOmitTransactionId;
-    const createBalanceOmitTransactionId = createTransactionComplex.createBalanceOmitTransactionId;
+    // todo: フロントエンドから渡されてきたCreateTransactionDtoオブジェクトをトランザクション処理に利用できる形式に変換する処理を書く
 
     // 1. Prismaのトランザクション処理を開始
     return await this.prisma.$transaction(async (prisma) => {
       // 2. Transactionを作成
       const transaction: TransactionResponse = await this.prisma.transaction.create({
-        data: createTransactionSeedDto
+        data: createTransactionDto
       });
 
       // 3. transactionIdを取得
