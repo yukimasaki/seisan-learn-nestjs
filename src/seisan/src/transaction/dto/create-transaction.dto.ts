@@ -7,13 +7,10 @@ export class CreateTransactionSeedDto extends OmitType(Transaction, ['id', 'edit
 
 export class CreateTransactionDto extends OmitType(Transaction, ['id', 'editorId']) {
   method: string;
-  ratioArray: {
-    id: number,
-    value: number,
-  }[];
-  actualPaymentAmountArray: {
-    id: number,
-    value: number,
+  paymentInfoArray: {
+    userId: number;
+    ratio: number;
+    amountEachMember: number;
   }[];
 }
 
