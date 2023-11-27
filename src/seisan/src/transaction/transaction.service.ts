@@ -15,7 +15,6 @@ export class TransactionService {
   async createWithTransaction(
     createTransactionDto: CreateTransactionDto,
   ) {
-    // todo: フロントエンドから渡されてきたCreateTransactionDtoオブジェクトをトランザクション処理に利用できる形式に変換する処理を書く
 
     // 1. Prismaのトランザクション処理を開始
     return await this.prisma.$transaction(async (prisma) => {
@@ -24,26 +23,32 @@ export class TransactionService {
         data: createTransactionDto
       });
 
+      // todo: フロントエンドから渡されてきたCreateTransactionDtoオブジェクトをトランザクション処理に利用できる形式に変換する処理を書く
       // 3. transactionIdを取得
       const transactionId = transaction.id;
-      // transactionIdを付与する (Payment)
-      const createPaymentDto: CreatePaymentDto[] = createPaymentOmitTransactionId.map(omitTransactionId => ({
-        ...omitTransactionId,
-        transactionId,
-      }));
-      // transactionIdを付与する (Balance)
-      const createBalanceDto: CreateBalanceDto[] = createBalanceOmitTransactionId.map(omitTransactionId => ({
-        ...omitTransactionId,
-        transactionId,
-      }));
+
+      // 4. CreatePaymentDto[]を作成
+      const totalActualPaymentAmount: number = createTransactionDto.amount;
+      const createPaymentDto: CreatePaymentDto[] = createTransactionDto.paymentInfoArray.map(
+        paymentInfo => ({
+          payerId: paymentInfo.userId,
+          actualPaymentAmount: paymentInfo.amountEachMember,
+          defaultPaymentAmount: Math.round(totalActualPaymentAmount * paymentInfo.ratio),
+          difference: (paymentInfo.amountEachMember) - Math.round(totalActualPaymentAmount * paymentInfo.ratio),
+          method: createTransactionDto.method,
+          ratio: paymentInfo.ratio,
+          transactionId,
+        }));
+
+      // 5. CreateBalanceDto[]を作成
 
       // APIへのアクセスをPromise.allで並列処理し高速化する
       Promise.all([
-        // 4. Paymentを作成
+        // 6. Paymentを作成
         await this.prisma.payment.createMany({
           data: createPaymentDto
         }),
-        // 5. Balanceを作成
+        // 7. Balanceを作成
         await this.prisma.balance.createMany({
           data: createBalanceDto
         }),
